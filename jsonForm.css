@@ -1,0 +1,32 @@
+.section{
+   border: 1px solid #ccc!important;
+   /* border-radius: 16px; */
+
+   padding: 7px;
+}
+
+.label {
+    display:block;
+    /* margin: 7px; */
+}
+
+.field {
+    display:block;
+    margin: 7px;
+}
+
+.row{
+    display: flex;
+    /* margin: 7px; */
+}
+
+.fielddiv{
+    float: left;
+    margin: 7px;
+    /* margin-right:20px; */
+}
+
+.required{
+  color: red;
+  margin-left: 7px;
+}
