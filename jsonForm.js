@@ -68,7 +68,7 @@ data.elements.forEach(function(section) {
                                                 jsonOptions.forEach(function(item) {
                                                     display.push(eval(field.datadisplay));
                                                 });
-                                                this.setCellMetaObject(0,0,jsonOptions);
+                                               // this.setCellMetaObject(0,0,jsonOptions);
                                                 process(display);
                                             } else {
                                                 console.err("cant fetch data");
