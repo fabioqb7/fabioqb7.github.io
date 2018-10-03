@@ -2,36 +2,43 @@
 	{
 	"id":"p0",
 	"desc":"Producto 1",
+	"uni":"docena",
 	"precio":1
 	},
 	{
 		"id":"p1",
 	"desc":"Pantalon",
+	"uni":"pza",
 	"precio":600
 	},
 	{
 		"id":"p2",
 	"desc":"Camisa",
+	"uni":"pza",
 	"precio":600
 	},
 	{
 		"id":"p3",
 	"desc":"Playera",
+	"uni":"pza",
 	"precio":340
 	},
 	{
 		"id":"p4",
-	"desc":"Zapato",
+	"desc":"Zapatos",
+	"uni":"par",
 	"precio":500
 	},
 	{
 		"id":"p5",
 	"desc":"Short",
+	"uni":"pieza",
 	"precio":300
 	},
 	{
 		"id":"p6",
 	"desc":"Gorra",
+	"uni":"pza",
 	"precio":250
 	}
 ]

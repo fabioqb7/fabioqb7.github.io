@@ -224,10 +224,12 @@ data={
               "helperId": "8b5a752f-fc7e-45da-96ca-24146a41a712",
               "width": "150px",
               "required": true,
-              "dataurl":"https://raw.githubusercontent.com/matthlavacka/car-list/master/car-list.json",
-              "datadisplay":"item.brand",
-              "datareturn":"item.brand",
-              "datalength":2
+              "dataurl":"https://fabioqb7.github.io/prodcutos.json",
+              "datadisplay":"item.desc",
+              "datareturn":"item.id",
+              "datafill":{"precio":"precio","uni":"unidad"},
+              "datalength":2,
+              "strict": true
 
             },
             {

@@ -68,6 +68,7 @@ data.elements.forEach(function(section) {
                                                 jsonOptions.forEach(function(item) {
                                                     display.push(eval(field.datadisplay));
                                                 });
+                                                this.setCellMetaObject(0,0,jsonOptions);
                                                 process(display);
                                             } else {
                                                 console.err("cant fetch data");
@@ -83,6 +84,8 @@ data.elements.forEach(function(section) {
                     }
                 });
 
+                row.fields[1].options={items: Infinity};
+
                 var hotElement = tablediv;
                 var hotElementContainer = rowdiv;
                 var hotSettings = {
@@ -92,6 +95,7 @@ data.elements.forEach(function(section) {
                     manualColumnResize: true,
                     columnSorting: true,
                     afterChange: function(change, source) {
+                        console.log(change);
                         var hotable = this;
                         if (change) {
                             if (dict[change[0][1]].fire) {
