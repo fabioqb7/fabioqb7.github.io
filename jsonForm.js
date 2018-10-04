@@ -29,8 +29,6 @@ data.elements.forEach(function(section) {
     section.rows.forEach(function(row) { // Row
 
         var rowdiv = document.createElement("div");
-
-
         switch (row.type) {
             case "table":
                 var colsum = [];
@@ -45,19 +43,16 @@ data.elements.forEach(function(section) {
                         colsum.push(colus)
                     }
                 })
-                console.log(colsum);
-
                 var tablediv = document.createElement("div");
                 tablediv.setAttribute("id", "hot");
                 rowdiv.appendChild(tablediv);
-
-
                 var dict = {};
                 row.fields.forEach(function(field, index) {
                     dict[field.data] = field;
                     if (field.type == "autocomplete") {
                         if (field.dataurl && field.datadisplay && field.datareturn && field.datalength) {
                             field.source = function(query, process) {
+                                var acRow=this;
                                 if (query.length >= field.datalength) {
                                     var request = new XMLHttpRequest();
                                     request.onreadystatechange = function(response) {
@@ -68,7 +63,7 @@ data.elements.forEach(function(section) {
                                                 jsonOptions.forEach(function(item) {
                                                     display.push(eval(field.datadisplay));
                                                 });
-                                               // this.setCellMetaObject(0,0,jsonOptions);
+                                                acRow.instance.setCellMetaObject(acRow.row,acRow.col,{data:jsonOptions,pivot:field.datadisplay.split(".")[1]});
                                                 process(display);
                                             } else {
                                                 console.err("cant fetch data");
@@ -95,9 +90,23 @@ data.elements.forEach(function(section) {
                     manualColumnResize: true,
                     columnSorting: true,
                     afterChange: function(change, source) {
-                        console.log(change);
-                        var hotable = this;
+                        hotable = this;
                         if (change) {
+                            var metaData=hotable.getCellMeta(change[0][0],hotable.propToCol(change[0][1]));
+                            if(metaData.data&&metaData.pivot)
+                            { 
+                                console.log(metaData);
+                                for(i=0;i<=metaData.data.length;i++){
+                                    if(change[0][3]==metaData.data[i][metaData.pivot]){
+                                        for(var key in metaData.data[i]){
+                                            console.log(key)
+                                             hotable.setDataAtRowProp(change[0][0], key, metaData.data[i][key], "auto");
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                            if (dict[change[0][1]])
                             if (dict[change[0][1]].fire) {
                                 dict[change[0][1]].fire.split(",").forEach(function(fired, index) {
                                     if (dict[fired].expression) {
@@ -177,9 +186,6 @@ data.elements.forEach(function(section) {
                                 });
                             fielddiv.appendChild(datalist);
                             input.onkeyup = function(e) {
-                                console.log(e.target.value.length);
-                                console.log(field.datalength);
-
                                 if (field.dataurl && field.datadisplay && field.datareturn && field.datalength) {
                                     if (e.target.value.length >= field.datalength) {
                                         var request = new XMLHttpRequest();
@@ -228,15 +234,11 @@ data.elements.forEach(function(section) {
                             input.setAttribute("class", "input")
                             fielddiv.style.setProperty('width', field.width, '');
                             break;
-
                         case "date":
                             input.setAttribute("type", "date");
                             input.setAttribute("class", "input")
                             flatpickr(input, {});
                             break;
-
-
-
                         default:
                             input.setAttribute("type", "text");
                             break;
@@ -259,10 +261,8 @@ data.elements.forEach(function(section) {
                 input.setAttribute("class", "editor")
                 rowdiv.appendChild(input);
                 sectiondiv.appendChild(rowdiv);
-
                 break;
         }
-
 
     });
     area.appendChild(sectiondiv)
@@ -271,8 +271,3 @@ data.elements.forEach(function(section) {
         theme: 'snow'
     });
 });
-
-
-
-
-console.log(data)
