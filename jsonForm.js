@@ -99,7 +99,6 @@ data.elements.forEach(function(section) {
                                 for(i=0;i<=metaData.data.length;i++){
                                     if(change[0][3]==metaData.data[i][metaData.pivot]){
                                         for(var key in metaData.data[i]){
-                                            console.log(key)
                                              hotable.setDataAtRowProp(change[0][0], key, metaData.data[i][key], "auto");
                                         }
                                         break;
