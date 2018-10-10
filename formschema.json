@@ -253,6 +253,7 @@ data={
               "defaultValue": 1,
               "sumary":"sum",
               "fire":"subtotal"
+
             },
             {
               "data": "precio",
@@ -283,6 +284,7 @@ data={
               "helperId": "",
               "width": "80px",
               "expression":"col('subtotal')*form('iva')",
+              "sumform":["grantotal"],
               "editor": false,
               "numericFormat": {
         "pattern": "$0,0.00",
@@ -324,7 +326,7 @@ data={
               "calculatedValue": "var x = 0; for (var i = 0; i < data.movd.length; i++) { x += data.movd[i].cantidad2; } value = x; "             
             },
             {
-              "key": "total2",
+              "key": "grantotal",
               "label": "",
               "type":"numeric",
               "width": "100px",

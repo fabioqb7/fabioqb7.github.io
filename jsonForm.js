@@ -6,6 +6,10 @@ var textnode = document.createTextNode(data.label);
 title.appendChild(textnode)
 area.appendChild(title)
 
+var setFormVal=function(key,val){
+    document.getElementById(key).value=val;
+}
+
 data.elements.forEach(function(section) {
 
     var sectiondiv = document.createElement("section");
@@ -95,7 +99,6 @@ data.elements.forEach(function(section) {
                             var metaData=hotable.getCellMeta(change[0][0],hotable.propToCol(change[0][1]));
                             if(metaData.data&&metaData.pivot)
                             { 
-                                console.log(metaData);
                                 for(i=0;i<=metaData.data.length;i++){
                                     if(change[0][3]==metaData.data[i][metaData.pivot]){
                                         for(var key in metaData.data[i]){
@@ -105,7 +108,7 @@ data.elements.forEach(function(section) {
                                     }
                                 }
                             }
-                            if (dict[change[0][1]])
+                            if (dict[change[0][1]]){
                             if (dict[change[0][1]].fire) {
                                 dict[change[0][1]].fire.split(",").forEach(function(fired, index) {
                                     if (dict[fired].expression) {
@@ -121,6 +124,20 @@ data.elements.forEach(function(section) {
                                     }
                                 })
                             }
+                            if (dict[change[0][1]].sumform){
+                                dict[change[0][1]].sumform.forEach(function(data,i){
+                                var sum=0;
+                                hotable.getDataAtProp(change[0][1]).forEach(function(obj,index){
+                                    if(typeof obj == 'number')
+                                        sum=+obj;
+                                })
+
+                                    setFormVal(data,sum);
+                                });
+
+                            }
+
+                        }
                         }
                     }
                 };
