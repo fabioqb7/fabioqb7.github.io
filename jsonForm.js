@@ -14,6 +14,7 @@ class FormJSON {
         if (typeof json == "string") {
             this.getURL(json, function(err, text) {
                 if (!err) {
+                    console.log(text)
                     this.schema = JSON.parse(text);
                     this.draw();
                 }
@@ -327,5 +328,3 @@ class FormJSON {
 
 
 }
-
-console.log("hola")
