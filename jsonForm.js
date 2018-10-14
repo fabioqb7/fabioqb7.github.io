@@ -1,6 +1,7 @@
 class FormJSON {
 
     constructor(json, cont) {
+        this.data={};
         if (cont)
             this.container = document.getElementById(cont);
         else
@@ -12,22 +13,20 @@ class FormJSON {
         }
 
         if (typeof json == "string") {
+            var thisclass = this;
             this.getURL(json, function(err, text) {
                 if (!err) {
-                    console.log(text)
-                    this.schema = JSON.parse(text);
-                    this.draw();
+                    thisclass.schema = JSON.parse(text);
+                    thisclass.draw();
                 }
             });
         }
     }
 
-
-    
-
     draw() {
+        var thisclass = this;
         var title = document.createElement("div");
-        var textnode = document.createTextNode(data.label);
+        var textnode = document.createTextNode(this.schema.label);
         title.appendChild(textnode)
         this.container.appendChild(title)
         var setFormVal = function(key, val) {
@@ -117,11 +116,11 @@ class FormJSON {
                             manualColumnResize: true,
                             columnSorting: true,
                             afterChange: function(change, source) {
-                                hotable = this;
+                                var hotable = this;
                                 if (change) {
                                     var metaData = hotable.getCellMeta(change[0][0], hotable.propToCol(change[0][1]));
                                     if (metaData.data && metaData.pivot) {
-                                        for (i = 0; i <= metaData.data.length; i++) {
+                                        for (var i = 0; i <= metaData.data.length; i++) {
                                             if (change[0][3] == metaData.data[i][metaData.pivot]) {
                                                 for (var key in metaData.data[i]) {
                                                     hotable.setDataAtRowProp(change[0][0], key, metaData.data[i][key], "auto");
@@ -204,8 +203,10 @@ class FormJSON {
                                         optiontag.setAttribute("value", option.value);
                                         input.appendChild(optiontag);
                                     })
+                                    input.onchange=function(){
+                                        thisclass.data[field.key]=input.options[input.selectedIndex].value;
+                                    }
                                     break;
-
                                 case "autocomplete":
 
                                     input.setAttribute("class", "input");
@@ -280,6 +281,7 @@ class FormJSON {
                                     break;
                                 default:
                                     input.setAttribute("type", "text");
+                                    field.value?field.value:"";
                                     break;
 
                             }
@@ -296,7 +298,7 @@ class FormJSON {
                         sectiondiv.appendChild(rowdiv);
                         break;
                     case "textarea":
-                        input = document.createElement("div");
+                        var input = document.createElement("div");
                         input.setAttribute("class", "editor")
                         rowdiv.appendChild(input);
                         sectiondiv.appendChild(rowdiv);
@@ -304,7 +306,7 @@ class FormJSON {
                 }
 
             });
-            container.appendChild(sectiondiv)
+            thisclass.container.appendChild(sectiondiv)
             var quill = new Quill('.editor', { theme: 'snow' });
         });
 
@@ -317,12 +319,19 @@ class FormJSON {
                 if (request.status === 200) {
                     callback(null, request.responseText);
                 } else {
-                    callback({ status: request.status, err: "cant fetch data" })
+                    callback({ status: request.status, err: "cant fetch data" }, null)
                 }
             }
         };
         request.open('GET', url, true);
         request.send();
+    }
+
+    getData(field){
+        if(field)
+            return this.data[field];
+        else
+        return this.data;
     }
 
 

@@ -1,356 +1,357 @@
 {
-  "label": "Capacitación",
-  "type": "form",
-  "_id": "636b18b4-cf55-4649-aeb7-905e8f7c6e84",
-  "elements": [
+    "label": "Capacitación",
+    "type": "form",
+    "_id": "636b18b4-cf55-4649-aeb7-905e8f7c6e84",
+    "elements": [
     {
-      "type": "section",
-      "hidden": false,
-      "rows": [
+        "type": "section",
+        "hidden": false,
+        "rows": [
         {
-          "type": "row",
-          "height": "25px",
-          "position": 1,
-          "fields": [
+            "type": "row",
+            "height": "25px",
+            "position": 1,
+            "fields": [
             {
-              "type":"list",
-              "key": "documento",
-              "label": "Documento",
-              "dataType": "string",
-              "helper": "list",
-              "helperId": "",
-              "width": "200px",
-              "height": "25px",
-              "required": true,
-              "hidden": false,
-              "dissabled": false,
-              "list": [
+                "type": "list",
+                "key": "documento",
+                "label": "Documento",
+                "dataType": "string",
+                "helper": "list",
+                "helperId": "",
+                "width": "200px",
+                "height": "25px",
+                "required": true,
+                "hidden": false,
+                "dissabled": false,
+                "list": [
                 {
-                  "label": "Propuesta Proyecto",
-                  "value": "propuestaProyecto"
+                    "label": "Propuesta Proyecto",
+                    "value": "propuestaProyecto"
                 },
                 {
-                  "label": "Evaluación Propuesta",
-                  "value": "evaluacionPropuesta"
-                }
-              ],
-              "defaultValue": "propuestaProyecto"
+                    "label": "Evaluación Propuesta",
+                    "value": "evaluacionPropuesta"
+                }],
+                "defaultValue": "propuestaProyecto"
             },
             {
-              "type":"date",
-              "key": "fecha",
-              "label": "Fecha",
-              "dataType": "date",
-              "helper": "date",
-              "helperId": "",
-              "width": "200px",
-              "height": "25px",
-              "required": true,
-              "hidden": false,
-              "dissabled": false,
-              "defaultValue": "moment()"
+                "type": "date",
+                "key": "fecha",
+                "label": "Fecha",
+                "dataType": "date",
+                "helper": "date",
+                "helperId": "",
+                "width": "200px",
+                "height": "25px",
+                "required": true,
+                "hidden": false,
+                "dissabled": false,
+                "defaultValue": "moment()"
             },
             {
-              "type":"text",
-              "key": "estatus",
-              "label": "Estatus",
-              "dataType": "string",
-              "width": "200px",
-              "height": "25px",
-              "required": true,
-              "hidden": false,
-              "dissabled": true,
-              "defaultValue": "Borrador"
+                "type": "text",
+                "key": "estatus",
+                "label": "Estatus",
+                "dataType": "string",
+                "width": "200px",
+                "height": "25px",
+                "required": true,
+                "hidden": false,
+                "dissabled": true,
+                "defaultValue": "Borrador"
             },
             {
-              "type":"text",
-              "key": "folio",
-              "label": "Folio",
-              "dataType": "string",
-              "width": "200px",
-              "height": "25px",
-              "required": true,
-              "hidden": false,
-              "dissabled": true
-            }
-          ]
-        }
-      ]
+                "type": "text",
+                "key": "folio",
+                "label": "Folio",
+                "dataType": "string",
+                "width": "200px",
+                "height": "25px",
+                "required": true,
+                "hidden": false,
+                "dissabled": true
+            }]
+        }]
     },
     {
-      "type": "section",
-      "hidden": false,
-      "frame": {
-        "label": "1.- Datos Generales",
-        "labelColor": "#ffffff",
-        "headerHeight": "6px",
-        "headerFillColor": "#4eb819",
-        "lineColor": "#45a017",
-        "lineThick": "1px"
-      },
-      "rows": [
+        "type": "section",
+        "hidden": false,
+        "frame":
         {
-          "type": "row",
-          "height": "45px",
-          "position": 1,
-          "fields": [
+            "label": "1.- Datos Generales",
+            "labelColor": "#ffffff",
+            "headerHeight": "6px",
+            "headerFillColor": "#4eb819",
+            "lineColor": "#45a017",
+            "lineThick": "1px"
+        },
+        "rows": [
+        {
+            "type": "row",
+            "height": "45px",
+            "position": 1,
+            "fields": [
             {
-              "key": "fechaInicio",
-              "label": "Fecha Inicio",
-              "dataType": "date",
-              "helper": "date",
-              "type":"date",
-              "helperId": "",
-              "width": "200px",
-              "required": true,
-              "hidden": false,
-              "dissabled": false,
-              "defaultValue": "moment()"
+                "key": "fechaInicio",
+                "label": "Fecha Inicio",
+                "dataType": "date",
+                "helper": "date",
+                "type": "date",
+                "helperId": "",
+                "width": "200px",
+                "required": true,
+                "hidden": false,
+                "dissabled": false,
+                "defaultValue": "moment()"
             },
             {
-              "key": "fechaFin",
-              "label": "Fecha Fin",
-              "dataType": "date",
-              "helper": "date",
-              "type":"date",
-              "helperId": "",
-              "width": "200px",
-              "required": true,
-              "hidden": false,
-              "dissabled": false
+                "key": "fechaFin",
+                "label": "Fecha Fin",
+                "dataType": "date",
+                "helper": "date",
+                "type": "date",
+                "helperId": "",
+                "width": "200px",
+                "required": true,
+                "hidden": false,
+                "dissabled": false
             },
             {
-              "key": "proyecto",
-              "label": "Proyecto",
-              "dataType": "string",
-              "helper": "autocomplete",
-              "type":"autocomplete",
-              "helperId": "7c3d0840-cab5-4c2a-9b3b-eecc97ce0195",
-              "width": "400px",
-              "required": true,
-              "hidden": false,
-              "dissabled": false,
-              "data": [
-                {"id": 941, "value":"Estudiantes de Primaria"},
-                {"id": 945, "value":"Estudiantes de â€¦ tÃ©cnico"},
-                {"id": 949, "value":"Estudiantes de â€¦versidad"}
-            ]
-            }
-          ]
+                "key": "proyecto",
+                "label": "Proyecto",
+                "dataType": "string",
+                "helper": "autocomplete",
+                "type": "autocomplete",
+                "helperId": "7c3d0840-cab5-4c2a-9b3b-eecc97ce0195",
+                "width": "400px",
+                "required": true,
+                "hidden": false,
+                "dissabled": false,
+                "data": [
+                {
+                    "id": 941,
+                    "value": "Estudiantes de Primaria"
+                },
+                {
+                    "id": 945,
+                    "value": "Estudiantes de â€¦ tÃ©cnico"
+                },
+                {
+                    "id": 949,
+                    "value": "Estudiantes de â€¦versidad"
+                }]
+            }]
         },
         {
-          "type": "row",
-          "height": "45px",
-          "position": 2,
-          "fields": [
+            "type": "row",
+            "height": "45px",
+            "position": 2,
+            "fields": [
             {
-              "key": "ubicacion",
-              "label": "Marca de Auto",
-              "dataType": "string",
-              "helper": "autocomplete",
-              "type":"autocomplete",
-              "dataurl":"https://raw.githubusercontent.com/matthlavacka/car-list/master/car-list.json",
-              "datalength":3,
-              "datadisplay":"item.brand",
-              "datareturn":"item.brand",
-              "width": "250px",
-              "required": true,
-              "hidden": false,
-              "dissabled": false
+                "key": "ubicacion",
+                "label": "Marca de Auto",
+                "dataType": "string",
+                "helper": "autocomplete",
+                "type": "autocomplete",
+                "dataurl": "https://raw.githubusercontent.com/matthlavacka/car-list/master/car-list.json",
+                "datalength": 3,
+                "datadisplay": "item.brand",
+                "datareturn": "item.brand",
+                "width": "250px",
+                "required": true,
+                "hidden": false,
+                "dissabled": false
             },
             {
-              "key": "iva",
-              "label": "iva",
-              "dataType": "numeric",
-              "helper": "",
-              "type":"numeric",
-              "helperId": "",
-              "width": "250px",
-              "required": false,
-              "hidden": false,
-              "dissabled":true
+                "key": "iva",
+                "label": "IVA",
+                "dataType": "numeric",
+                "helper": "",
+                "type": "numeric",
+                "helperId": "",
+                "width": "250px",
+                "required": false,
+                "hidden": false,
+                "dissabled": true,
+                "value":1.16
             },
             {
-              "key": "relevante",
-              "label": "Información relevante para reporte de avances",
-              "dataType": "int",
-              "helper": "radio",
-              "type":"radio",
-              "helperId": "",
-              "width": "250px",
-              "required": false,
-              "hidden": false,
-              "dissabled": false,
-              "list": [
+                "key": "relevante",
+                "label": "Información relevante para reporte de avances",
+                "dataType": "int",
+                "helper": "radio",
+                "type": "radio",
+                "helperId": "",
+                "width": "250px",
+                "required": false,
+                "hidden": false,
+                "dissabled": false,
+                "list": [
                 {
-                  "label": "Si",
-                  "value": 1
+                    "label": "Si",
+                    "value": 1
                 },
                 {
-                  "label": "No",
-                  "value": 0
+                    "label": "No",
+                    "value": 0
                 },
                 {
-                  "label": "NA",
-                  "value": 3
-                }
-              ]
-            }
-          ]
-        }
-      ]
+                    "label": "NA",
+                    "value": 3
+                }]
+            }]
+        }]
     },
     {
-      "type": "section",
-      "hidden": false,
-      "frame": {
-        "label": "3.- Detalle",
-        "labelColor": "#ffffff",
-        "headerHeight": "6px",
-        "headerFillColor": "#4eb819",
-        "lineColor": "#45a017",
-        "lineThick": "1px"
-      },
-      "rows": [
+        "type": "section",
+        "hidden": false,
+        "frame":
         {
-          "type": "table",
-          "fields": [
+            "label": "3.- Detalle",
+            "labelColor": "#ffffff",
+            "headerHeight": "6px",
+            "headerFillColor": "#4eb819",
+            "lineColor": "#45a017",
+            "lineThick": "1px"
+        },
+        "rows": [
+        {
+            "type": "table",
+            "fields": [
             {
-              "data": "articulo",
-              "title": "Tipo de capacitado",
-              "factor-bi":"usd8wencsd93ins",
-              "type": "autocomplete",
-              "helper": "autocomplete",
-              "helperId": "8b5a752f-fc7e-45da-96ca-24146a41a712",
-              "width": "150px",
-              "required": true,
-              "dataurl":"https://fabioqb7.github.io/prodcutos.json",
-              "datadisplay":"item.desc",
-              "datareturn":"item.id",
-              "datafill":{"precio":"precio","uni":"unidad"},
-              "datalength":2,
-              "strict": true
+                "data": "articulo",
+                "title": "Tipo de capacitado",
+                "factor-bi": "usd8wencsd93ins",
+                "type": "autocomplete",
+                "helper": "autocomplete",
+                "helperId": "8b5a752f-fc7e-45da-96ca-24146a41a712",
+                "width": "150px",
+                "required": true,
+                "dataurl": "https://fabioqb7.github.io/prodcutos.json",
+                "datadisplay": "item.desc",
+                "datareturn": "item.id",
+                "datafill":
+                {
+                    "precio": "precio",
+                    "uni": "unidad"
+                },
+                "datalength": 2,
+                "strict": true
 
             },
             {
-              "data": "unidad",
-              "title": "Unidad de medida",
-              "type": "text",
-              "helper": "",
-              "helperId": "",
-              "width": "150px",
-              "required": true,
-              "dissabled": true
+                "data": "unidad",
+                "title": "Unidad de medida",
+                "type": "text",
+                "helper": "",
+                "helperId": "",
+                "width": "150px",
+                "required": true,
+                "dissabled": true
             },
             {
-              "data": "cantidad",
-              "title": "Cantidad",
-              "type": "numeric",
-              "helper": "",
-              "helperId": "",
-              "width": "80px",
-              "required": true,
-              "defaultValue": 1,
-              "sumary":"sum",
-              "fire":"subtotal"
+                "data": "cantidad",
+                "title": "Cantidad",
+                "type": "numeric",
+                "helper": "",
+                "helperId": "",
+                "width": "80px",
+                "required": true,
+                "defaultValue": 1,
+                "sumary": "sum",
+                "fire": "subtotal"
 
             },
             {
-              "data": "precio",
-              "title": "Precio",
-              "type": "numeric",
-              "helper": "",
-              "helperId": "",
-              "width": 200,
-              "fire":"subtotal"
+                "data": "precio",
+                "title": "Precio",
+                "type": "numeric",
+                "helper": "",
+                "helperId": "",
+                "width": 200,
+                "fire": "subtotal"
             },
             {
-              "data": "subtotal",
-              "title": "Subtotal",
-              "type": "numeric",
-              "helper": "",
-              "helperId": "",
-              "width": "80px",
-               "sumary":"sum",
+                "data": "subtotal",
+                "title": "Subtotal",
+                "type": "numeric",
+                "helper": "",
+                "helperId": "",
+                "width": "80px",
+                "sumary": "sum",
                 "editor": false,
-                "fire":"total",
-               "expression":"col('precio')*col('cantidad')"
+                "fire": "total",
+                "expression": "col('precio')*col('cantidad')"
             },
             {
-              "data": "total",
-              "title": "Total",
-              "type": "numeric",
-              "helper": "",
-              "helperId": "",
-              "width": "80px",
-              "expression":"col('subtotal')*form('iva')",
-              "sumform":["grantotal"],
-              "editor": false,
-              "numericFormat": {
-        "pattern": "$0,0.00",
-        "culture": "en-US" 
-      }
-            }
-          ]
+                "data": "total",
+                "title": "Total",
+                "type": "numeric",
+                "helper": "",
+                "helperId": "",
+                "width": "80px",
+                "expression": "col('subtotal')*form('iva')",
+                "sumform": ["grantotal"],
+                "editor": false,
+                "numericFormat":
+                {
+                    "pattern": "$0,0.00",
+                    "culture": "en-US"
+                }
+            }]
         },
         {
-          "type": "row",
-          "position": 2,
-          "fields": [
+            "type": "row",
+            "position": 2,
+            "fields": [
             {
-              "key": "blank1",
-              "width": "200px",
-              "type":"hidden",
-              "hidden": true
+                "key": "blank1",
+                "width": "200px",
+                "type": "hidden",
+                "hidden": true
             },
             {
-              "key": "totales1",
-              "label": "Totales:",
-              "type":"hidden",
-              "width": "100px"
+                "key": "totales1",
+                "label": "Totales:",
+                "type": "hidden",
+                "width": "100px"
             },
             {
-              "key": "total2",
-              "label": "",
-              "type":"numeric",
-              "width": "100px",
-              "dissabled": true,
-              "calculatedValue": "var x = 0;for (var i = 0; i < data.movd.length; i++) {x += data.movd[i].cantidad;} value = x;"
+                "key": "total2",
+                "label": "",
+                "type": "numeric",
+                "width": "100px",
+                "dissabled": true,
             },
             {
-              "key": "total",
-              "label": "",
-              "type":"numeric",
-              "width": "100px",
-              "dissabled": true,
-              "calculatedValue": "var x = 0; for (var i = 0; i < data.movd.length; i++) { x += data.movd[i].cantidad2; } value = x; "             
+                "key": "total",
+                "label": "",
+                "type": "numeric",
+                "width": "100px",
+                "dissabled": true,
             },
             {
-              "key": "grantotal",
-              "label": "",
-              "type":"numeric",
-              "width": "100px",
-              "dissabled": true,
-              "calculatedValue": "var x = 0; for (var i = 0; i < data.movd.length; i++) { x += data.movd[i].cantidad3; } value = x; "
-            }
-          ]
+                "key": "grantotal",
+                "label": "",
+                "type": "numeric",
+                "width": "100px",
+                "dissabled": true
+            }]
         },
         {
-          "type": "textarea",
-              "key": "texto2",
-              "label": "Descripción de la actividad" 
+            "type": "textarea",
+            "key": "texto2",
+            "label": "Descripción de la actividad"
         },
         {
-          "type": "row",
-          "fields": [
+            "type": "row",
+            "fields": [
             {
-              "key": "file",
-              "label": "Documento",
-              "type": "file"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+                "key": "file",
+                "label": "Documento",
+                "type": "file"
+            }]
+        }]
+    }]
 }
