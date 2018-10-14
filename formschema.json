@@ -322,14 +322,14 @@
                 "label": "",
                 "type": "numeric",
                 "width": "100px",
-                "dissabled": true,
+                "dissabled": true
             },
             {
                 "key": "total",
                 "label": "",
                 "type": "numeric",
                 "width": "100px",
-                "dissabled": true,
+                "dissabled": true
             },
             {
                 "key": "grantotal",
