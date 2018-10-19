@@ -1,26 +1,77 @@
 class FormJSON {
 
     constructor(json, cont) {
-        this.data={};
+
+        var thisclass = this;
+        thisclass.data = {};
+
         if (cont)
-            this.container = document.getElementById(cont);
+            thisclass.container = document.getElementById(cont);
         else
-            this.container = document.getElementById("formJSON");
+            thisclass.container = document.getElementById("formJSON");
 
-        if (typeof json == 'object') {
-            this.schema = json;
-            this.draw();
+
+        this.jsfiles = [
+            "https://cdn.jsdelivr.net/npm/flatpickr",
+            "https://cdn.quilljs.com/1.3.6/quill.js",
+            "https://docs.handsontable.com/pro/5.0.0/components/handsontable-pro/dist/handsontable.full.min.js"
+        ];
+        this.cssfiles = [
+            "jsonForm.css",
+            "https://docs.handsontable.com/pro/5.0.0/components/handsontable-pro/dist/handsontable.full.min.css",
+            "https://cdn.quilljs.com/1.3.6/quill.snow.css",
+            "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+        ];
+
+        for (var i = 0; i < this.cssfiles.length; i++) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = this.cssfiles[i];
+            link.media = 'all';
+            thisclass.container.appendChild(link);
         }
 
-        if (typeof json == "string") {
-            var thisclass = this;
-            this.getURL(json, function(err, text) {
-                if (!err) {
-                    thisclass.schema = JSON.parse(text);
-                    thisclass.draw();
-                }
-            });
+
+
+        function loadjs(callback) {
+            var js = thisclass.jsfiles.pop();
+            if (js) {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.src = js;
+                script.onload = function() {
+                    loadjs(callback);
+                };
+                document.head.appendChild(script);
+            } else
+                callback();
+
         }
+
+        loadjs(function() {
+            console.log("all donde");
+
+
+
+            if (typeof json == 'object') {
+                thisclass.schema = json;
+                thisclass.draw();
+            }
+
+            if (typeof json == "string") {
+                thisclass.getURL(json, function(err, text) {
+                    if (!err) {
+                        thisclass.schema = JSON.parse(text);
+                        thisclass.draw();
+                    }
+                });
+            }
+        })
+
+
+
+
     }
 
     draw() {
@@ -192,6 +243,11 @@ class FormJSON {
 
 
                             var input = document.createElement("input");
+                            input.onchange = function() {
+                                thisclass.data[field.key] = input.value;
+                            }
+                            input.value = field.value ? field.value : "";
+                            thisclass.data[field.key] = input.value;
                             switch (field.type) {
                                 case "list":
                                     input = document.createElement("select");
@@ -203,8 +259,9 @@ class FormJSON {
                                         optiontag.setAttribute("value", option.value);
                                         input.appendChild(optiontag);
                                     })
-                                    input.onchange=function(){
-                                        thisclass.data[field.key]=input.options[input.selectedIndex].value;
+                                    thisclass.data[field.key] = input.options[input.selectedIndex].value;
+                                    input.onchange = function() {
+                                        thisclass.data[field.key] = input.options[input.selectedIndex].value;
                                     }
                                     break;
                                 case "autocomplete":
@@ -281,7 +338,6 @@ class FormJSON {
                                     break;
                                 default:
                                     input.setAttribute("type", "text");
-                                    field.value?field.value:"";
                                     break;
 
                             }
@@ -299,6 +355,7 @@ class FormJSON {
                         break;
                     case "textarea":
                         var input = document.createElement("div");
+                        //new Quill(input,{ theme: 'snow' });
                         input.setAttribute("class", "editor")
                         rowdiv.appendChild(input);
                         sectiondiv.appendChild(rowdiv);
@@ -307,7 +364,9 @@ class FormJSON {
 
             });
             thisclass.container.appendChild(sectiondiv)
-            var quill = new Quill('.editor', { theme: 'snow' });
+            thisclass.quill = new Quill('.editor', { theme: 'snow' });
+
+            //console.log(thisclass.quill)
         });
 
     }
@@ -327,11 +386,29 @@ class FormJSON {
         request.send();
     }
 
-    getData(field){
-        if(field)
+    getData(field) {
+        if (field)
             return this.data[field];
         else
-        return this.data;
+            return this.data;
+    }
+
+
+    print() {
+        var myWindow = window.open('', 'my div', 'height=400,width=600');
+        myWindow.document.write('<html><head><title>my div</title>');
+        /*optional stylesheet*/ //myWindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        myWindow.document.write('</head><body >');
+        myWindow.document.write(this.container.innerHTML);
+        myWindow.document.write('</body></html>');
+        myWindow.document.close(); // necessary for IE >= 10
+        myWindow.onload = function() { // necessary if the div contain images
+
+            myWindow.focus(); // necessary for IE >= 10
+            myWindow.print();
+            myWindow.close();
+        };
+        return true;
     }
 
 
