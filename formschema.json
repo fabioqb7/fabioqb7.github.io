@@ -1,6 +1,6 @@
 {
     "label": "Capacitación",
-    "type": "jsonform"
+    "type": "jsonform",
     "elements": [
     {
         "type": "section",

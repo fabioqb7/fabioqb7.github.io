@@ -11,6 +11,7 @@ class FormJSON {
             thisclass.container = document.getElementById("formJSON");
 
         this.jsfiles = ["https://cdn.jsdelivr.net/npm/flatpickr", "https://cdn.quilljs.com/1.3.6/quill.js", "https://docs.handsontable.com/pro/5.0.0/components/handsontable-pro/dist/handsontable.full.min.js", "https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"];
+
         this.cssfiles = ["jsonForm.css", "https://docs.handsontable.com/pro/5.0.0/components/handsontable-pro/dist/handsontable.full.min.css", "https://cdn.quilljs.com/1.3.6/quill.snow.css", "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"];
 
         for (var i = 0; i < this.cssfiles.length; i++) {
@@ -49,8 +50,15 @@ class FormJSON {
             if (typeof json == "string") {
                 thisclass.getURL(json, function(err, text) {
                     if (!err) {
-                        thisclass.schema = JSON.parse(text);
-                        thisclass.draw();
+                            try{
+                                    thisclass.schema = JSON.parse(text);
+                                    thisclass.draw();
+                            }
+                            catch(err){
+                                    thisclass.container.innerHTML="JSON Invalid";
+                            }
+                        
+                        
                     }
                 });
             }
@@ -325,8 +333,13 @@ class FormJSON {
                             flatpickr(input, {});
                             break;
                         case "file":
-                            input.setAttribute("type", "file");
-                            input.setAttribute("class", "input")
+                            input = []
+                            var fileinput = document.createElement("input");
+                            fileinput.setAttribute("type", "file");
+                            fileinput.setAttribute("class", "input")
+
+                            var displayinput = document.createElement("input")
+                            displayinput.setAttribute("type", "hidden");
 
                             input.onchange = function() {
                                 AWS.config.update({
@@ -342,8 +355,8 @@ class FormJSON {
                                         Bucket: field.s3BucketName
                                     }
                                 });
-                                
-                                var files = input.files;
+
+                                var files = fileinput.files;
                                 if (!files.length) {
                                     return alert('Please choose a file to upload first.');
                                 }
@@ -357,14 +370,17 @@ class FormJSON {
                                     Body: file,
                                     ACL: 'public-read'
                                 }, function(err, data) {
+                                    displayinput.setAttribute("type", "text");
                                     if (err) {
                                         console.log(err);
-                                        return alert('There was an error uploading your photo: ', err.message);
+                                        displayinput.value = 'There was an error uploading your photo: ' + err;
+                                        return false;
                                     }
-                                    alert('Successfully uploaded photo.');
-                                    console.log(data);
+                                    displayinput.value = data.Location;
                                 });
                             }
+                            input[0]=fileinput;
+                            input[1]=displayinput;
 
                             break;
                         default:
