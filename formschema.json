@@ -1,7 +1,6 @@
 {
     "label": "Capacitación",
-    "type": "form",
-    "_id": "636b18b4-cf55-4649-aeb7-905e8f7c6e84",
+    "type": "jsonform"
     "elements": [
     {
         "type": "section",

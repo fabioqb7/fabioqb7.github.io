@@ -349,7 +349,7 @@ class FormJSON {
                                 }
                                 var file = files[0];
                                 var fileName = file.name;
-                                var albumPhotosKey = 'filesuploaded' + '//';
+                                var albumPhotosKey = 'filesuploaded' + '/';
 
                                 var photoKey = albumPhotosKey + fileName;
                                 s3.upload({
