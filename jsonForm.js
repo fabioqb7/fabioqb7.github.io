@@ -327,28 +327,29 @@ class FormJSON {
                         case "file":
                             input.setAttribute("type", "file");
                             input.setAttribute("class", "input")
-                            AWS.config.update({
-                                region: field.s3BucketRegion,
-                                credentials: new AWS.CognitoIdentityCredentials({
-                                    IdentityPoolId: field.s3IdentityPoolId
-                                })
-                            });
 
-                            var s3 = new AWS.S3({
-                                apiVersion: '2006-03-01',
-                                params: {
-                                    Bucket: field.s3BucketName
-                                }
-                            });
+                            input.onchange = function() {
+                                AWS.config.update({
+                                    region: field.s3BucketRegion,
+                                    credentials: new AWS.CognitoIdentityCredentials({
+                                        IdentityPoolId: field.s3IdentityPoolId
+                                    })
+                                });
 
-                            input.opchange = function() {
+                                var s3 = new AWS.S3({
+                                    apiVersion: '2006-03-01',
+                                    params: {
+                                        Bucket: field.s3BucketName
+                                    }
+                                });
+                                
                                 var files = input.files;
                                 if (!files.length) {
                                     return alert('Please choose a file to upload first.');
                                 }
                                 var file = files[0];
                                 var fileName = file.name;
-                                var albumPhotosKey = "filesuploaded" + '//';
+                                var albumPhotosKey = 'filesuploaded' + '//';
 
                                 var photoKey = albumPhotosKey + fileName;
                                 s3.upload({
@@ -357,6 +358,7 @@ class FormJSON {
                                     ACL: 'public-read'
                                 }, function(err, data) {
                                     if (err) {
+                                        console.log(err);
                                         return alert('There was an error uploading your photo: ', err.message);
                                     }
                                     alert('Successfully uploaded photo.');
