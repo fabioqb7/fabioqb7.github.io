@@ -50,15 +50,8 @@ class FormJSON {
             if (typeof json == "string") {
                 thisclass.getURL(json, function(err, text) {
                     if (!err) {
-                            try{
-                                    thisclass.schema = JSON.parse(text);
-                                    thisclass.draw();
-                            }
-                            catch(err){
-                                    thisclass.container.innerHTML="JSON Invalid";
-                            }
-                        
-                        
+                        thisclass.schema = JSON.parse(text);
+                        thisclass.draw();
                     }
                 });
             }
@@ -126,6 +119,10 @@ class FormJSON {
                                             if (request.readyState === 4) {
                                                 if (request.status === 200) {
                                                     var jsonOptions = JSON.parse(request.responseText);
+
+                                                    if(field.datadepth){
+                                                        jsonOptions=eval("jsonOptions."+field.datadepth);
+                                                    }
                                                     var display = [];
                                                     jsonOptions.forEach(function(item) {
                                                         display.push(eval(field.datadisplay));
@@ -141,7 +138,11 @@ class FormJSON {
                                             }
                                         }
                                         ;
-                                        request.open('GET', field.dataurl, true);
+                                        request.open(field.datamethod, field.dataurl, true);
+
+                                        if(field.datamethod=="post")
+                                            request.send(JSON.stringify(field.dataquery));
+                                        else
                                         request.send();
                                     }
                                 }
@@ -333,13 +334,14 @@ class FormJSON {
                             flatpickr(input, {});
                             break;
                         case "file":
-                            input = []
-                            var fileinput = document.createElement("input");
-                            fileinput.setAttribute("type", "file");
-                            fileinput.setAttribute("class", "input")
+                   
+                            
+                            input.setAttribute("type", "file");
+                            input.setAttribute("class", "input")
 
                             var displayinput = document.createElement("input")
                             displayinput.setAttribute("type", "hidden");
+                            displayinput.setAttribute("id", field.key);
 
                             input.onchange = function() {
                                 AWS.config.update({
@@ -356,7 +358,7 @@ class FormJSON {
                                     }
                                 });
 
-                                var files = fileinput.files;
+                                var files = input.files;
                                 if (!files.length) {
                                     return alert('Please choose a file to upload first.');
                                 }
@@ -377,10 +379,11 @@ class FormJSON {
                                         return false;
                                     }
                                     displayinput.value = data.Location;
+                                    input.parentElement.appendChild(displayinput);
                                 });
                             }
-                            input[0]=fileinput;
-                            input[1]=displayinput;
+                           
+
 
                             break;
                         default:
@@ -388,6 +391,8 @@ class FormJSON {
                             break;
 
                         }
+                        console.log(typeof input);
+                       
                         input.setAttribute("id", field.key);
 
                         if (field.width)

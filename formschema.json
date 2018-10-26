@@ -9,7 +9,6 @@
         {
             "type": "row",
             "height": "25px",
-            "position": 1,
             "fields": [
             {
                 "type": "list",
@@ -89,7 +88,6 @@
         {
             "type": "row",
             "height": "45px",
-            "position": 1,
             "fields": [
             {
                 "key": "fechaInicio",
@@ -145,7 +143,6 @@
         {
             "type": "row",
             "height": "45px",
-            "position": 2,
             "fields": [
             {
                 "key": "ubicacion",
@@ -153,10 +150,18 @@
                 "dataType": "string",
                 "helper": "autocomplete",
                 "type": "autocomplete",
-                "dataurl": "https://raw.githubusercontent.com/matthlavacka/car-list/master/car-list.json",
+                "dataurl": "https://mutn3v9t25.execute-api.us-east-1.amazonaws.com/dev/controlpanel",
                 "datalength": 3,
+                "datadepth":"body.finalResult.data"
                 "datadisplay": "item.brand",
                 "datareturn": "item.brand",
+                "dataquery":
+                {
+                    "bucket": "biforms-control-panel",
+                    "file": "autocomplete.json",
+                    "masterFilter": "query"
+                },
+                "datamethod":"post",
                 "width": "250px",
                 "required": true,
                 "hidden": false,
@@ -173,7 +178,7 @@
                 "required": false,
                 "hidden": false,
                 "dissabled": true,
-                "value":1.16
+                "value": 1.16
             },
             {
                 "key": "relevante",
@@ -302,7 +307,6 @@
         },
         {
             "type": "row",
-            "position": 2,
             "fields": [
             {
                 "key": "blank1",
@@ -350,10 +354,10 @@
                 "key": "file",
                 "label": "Documento",
                 "type": "file",
-                "s3BucketName":"formjson",
-                "s3BucketRegion":"us-east-1",
-                "s3IdentityPoolId":"us-east-1:13b6adc6-fff1-4033-bcad-dfd5f0fea671"
-               
+                "s3BucketName": "formjson",
+                "s3BucketRegion": "us-east-1",
+                "s3IdentityPoolId": "us-east-1:13b6adc6-fff1-4033-bcad-dfd5f0fea671"
+
             }]
         }]
     }]
