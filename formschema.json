@@ -161,7 +161,7 @@
                     "file": "autocomplete.json",
                     "masterFilter": "query"
                 },
-                "datamethod":"post",
+                "datamethod":"POST",
                 "width": "250px",
                 "required": true,
                 "hidden": false,
