@@ -142,8 +142,10 @@ class FormJSON {
                                     
                                         request.open(field.datamethod, field.dataurl, true);
 
-                                        if(field.datamethod=="post")
+                                        if(field.datamethod=="POST"){
+                                            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                                             request.send(JSON.stringify(field.dataquery));
+                                        }
                                         else
                                         request.send();
                                     }
