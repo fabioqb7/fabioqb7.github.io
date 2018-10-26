@@ -123,6 +123,7 @@ class FormJSON {
                                                     if(field.datadepth){
                                                         jsonOptions=eval("jsonOptions."+field.datadepth);
                                                     }
+                                                    console.log(jsonOptions);
                                                     var display = [];
                                                     jsonOptions.forEach(function(item) {
                                                         display.push(eval(field.datadisplay));
