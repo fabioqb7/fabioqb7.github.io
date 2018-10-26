@@ -152,7 +152,7 @@
                 "type": "autocomplete",
                 "dataurl": "https://mutn3v9t25.execute-api.us-east-1.amazonaws.com/dev/controlpanel",
                 "datalength": 3,
-                "datadepth":"body.finalResult.data"
+                "datadepth":"body.finalResult.data",
                 "datadisplay": "item.brand",
                 "datareturn": "item.brand",
                 "dataquery":
