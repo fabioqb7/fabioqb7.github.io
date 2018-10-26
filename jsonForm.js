@@ -136,8 +136,10 @@ class FormJSON {
                                                     console.err("cant fetch data");
                                                 }
                                             }
-                                        }
-                                        ;
+                                        };
+
+                                        console.log(field.datamethod);
+                                    
                                         request.open(field.datamethod, field.dataurl, true);
 
                                         if(field.datamethod=="post")

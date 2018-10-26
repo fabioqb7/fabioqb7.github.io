@@ -232,15 +232,18 @@
                 "helperId": "8b5a752f-fc7e-45da-96ca-24146a41a712",
                 "width": "150px",
                 "required": true,
-                "dataurl": "https://fabioqb7.github.io/prodcutos.json",
-                "datadisplay": "item.desc",
-                "datareturn": "item.id",
-                "datafill":
+                "dataurl": "https://mutn3v9t25.execute-api.us-east-1.amazonaws.com/dev/controlpanel",
+                "datalength": 3,
+                "datadepth":"body.finalResult.data",
+                "datadisplay": "item.brand",
+                "datareturn": "item.brand",
+                "dataquery":
                 {
-                    "precio": "precio",
-                    "uni": "unidad"
+                    "bucket": "biforms-control-panel",
+                    "file": "autocomplete.json",
+                    "masterFilter": "query"
                 },
-                "datalength": 2,
+                "datamethod":"POST",
                 "strict": true
 
             },
