@@ -123,9 +123,9 @@ class FormJSON {
                                                     if(field.datadepth){
                                                         jsonOptions=eval("jsonOptions."+field.datadepth);
                                                     }
-                                                    console.log(jsonOptions);
                                                     var display = [];
                                                     jsonOptions.forEach(function(item) {
+                                                            console.log(eval(field.datadisplay));
                                                         display.push(eval(field.datadisplay));
                                                     });
                                                     acRow.instance.setCellMetaObject(acRow.row, acRow.col, {
