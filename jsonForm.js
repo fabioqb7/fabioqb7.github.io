@@ -119,13 +119,12 @@ class FormJSON {
                                             if (request.readyState === 4) {
                                                 if (request.status === 200) {
                                                     var jsonOptions = JSON.parse(request.responseText);
-
-                                                    if(field.datadepth){
-                                                        jsonOptions=eval("jsonOptions."+field.datadepth);
+                                                    if (field.datadepth) {
+                                                        jsonOptions = eval("jsonOptions." + field.datadepth);
                                                     }
                                                     var display = [];
                                                     jsonOptions.forEach(function(item) {
-                                                            console.log(eval(field.datadisplay));
+                                                        console.log(eval(field.datadisplay));
                                                         display.push(eval(field.datadisplay));
                                                     });
                                                     acRow.instance.setCellMetaObject(acRow.row, acRow.col, {
@@ -137,18 +136,16 @@ class FormJSON {
                                                     console.err("cant fetch data");
                                                 }
                                             }
-                                        };
+                                        }
+                                        ;
 
-                                        console.log(field.datamethod);
-                                    
                                         request.open(field.datamethod, field.dataurl, true);
 
-                                        if(field.datamethod=="POST"){
+                                        if (field.datamethod == "POST") {
                                             request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                                             request.send(JSON.stringify(field.dataquery));
-                                        }
-                                        else
-                                        request.send();
+                                        } else
+                                            request.send();
                                     }
                                 }
 
@@ -291,6 +288,11 @@ class FormJSON {
                                             if (request.readyState === 4) {
                                                 if (request.status === 200) {
                                                     var jsonOptions = JSON.parse(request.responseText);
+
+                                                    if (field.datadepth) {
+                                                        jsonOptions = eval("jsonOptions." + field.datadepth);
+                                                    }
+
                                                     jsonOptions.forEach(function(item) {
                                                         var option = document.createElement('option');
                                                         option.value = eval(field.datadisplay);
@@ -307,8 +309,13 @@ class FormJSON {
                                         while (datalist.firstChild)
                                             datalist.removeChild(datalist.firstChild);
 
-                                        request.open('GET', field.dataurl, true);
-                                        request.send();
+                                        request.open(field.datamethod, field.dataurl, true);
+
+                                        if (field.datamethod == "POST") {
+                                            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                                            request.send(JSON.stringify(field.dataquery));
+                                        } else
+                                            request.send();
                                     }
                                 }
                             }
@@ -339,8 +346,7 @@ class FormJSON {
                             flatpickr(input, {});
                             break;
                         case "file":
-                   
-                            
+
                             input.setAttribute("type", "file");
                             input.setAttribute("class", "input")
 
@@ -387,8 +393,6 @@ class FormJSON {
                                     input.parentElement.appendChild(displayinput);
                                 });
                             }
-                           
-
 
                             break;
                         default:
@@ -396,8 +400,7 @@ class FormJSON {
                             break;
 
                         }
-                        console.log(typeof input);
-                       
+
                         input.setAttribute("id", field.key);
 
                         if (field.width)

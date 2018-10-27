@@ -159,7 +159,7 @@
                 {
                     "bucket": "biforms-control-panel",
                     "file": "autocomplete.json",
-                    "masterFilter": "query"
+                    "masterFilter": "capa"
                 },
                 "datamethod":"POST",
                 "width": "250px",
