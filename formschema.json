@@ -234,7 +234,6 @@
                 "required": true,
                 "dataurl": "https://fabioqb7.github.io/prodcutos.json",
                 "datalength": 3,
-                "datadepth":"body.finalResult.data",
                 "datadisplay": "item.desc",
                 "datareturn": "item.desc",
                 "datamethod":"GET",
