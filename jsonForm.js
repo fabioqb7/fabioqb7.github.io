@@ -124,7 +124,6 @@ class FormJSON {
                                                     }
                                                     var display = [];
                                                     jsonOptions.forEach(function(item) {
-                                                        console.log(eval(field.datadisplay));
                                                         display.push(eval(field.datadisplay));
                                                     });
                                                     acRow.instance.setCellMetaObject(acRow.row, acRow.col, {
@@ -310,6 +309,10 @@ class FormJSON {
                                             datalist.removeChild(datalist.firstChild);
 
                                         request.open(field.datamethod, field.dataurl, true);
+
+                                        for (var i = 0; field.dataquery.length; i++)
+                                            if (field[i] == "_QUERY")
+                                                field[i] = input.value;
 
                                         if (field.datamethod == "POST") {
                                             request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
