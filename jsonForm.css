@@ -7,7 +7,9 @@
 
 .label {
     display:block;
-    /* margin: 7px; */
+    color:black;
+    text-align: center;
+    font-size: 100%;
 }
 
 .field {
