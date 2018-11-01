@@ -310,9 +310,9 @@ class FormJSON {
 
                                         request.open(field.datamethod, field.dataurl, true);
 
-                                        for (var i = 0; field.dataquery.length; i++)
-                                            if (field[i] == "_QUERY")
-                                                field[i] = input.value;
+                                        for (var key in field.dataquery)
+                                            if (field.dataquery[key] == "_QUERY")
+                                                field.dataquery[key] = input.value;
 
                                         if (field.datamethod == "POST") {
                                             request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
