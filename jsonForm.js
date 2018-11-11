@@ -279,7 +279,9 @@ class FormJSON {
                                 });
                             }
                             fielddiv.appendChild(datalist);
-                            input.onkeyup = function(e) {
+                            input.oninput = function(e) {
+                                if(e.inputType!="insertText")
+                                    return;
                                 if (field.dataurl && field.datadisplay && field.datareturn && field.datalength) {
                                     if (e.target.value.length >= field.datalength) {
                                         var request = new XMLHttpRequest();
