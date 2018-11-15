@@ -169,7 +169,7 @@ class FormJSON {
                             if (change) {
                                 var metaData = hotable.getCellMeta(change[0][0], hotable.propToCol(change[0][1]));
                                 if (metaData.data && metaData.pivot) {
-                                    for (var i = 0; i <= metaData.data.length; i++) {
+                                    for (var i = 0; i < metaData.data.length; i++) {
                                         if (change[0][3] == metaData.data[i][metaData.pivot]) {
                                             for (var key in metaData.data[i]) {
                                                 hotable.setDataAtRowProp(change[0][0], key, metaData.data[i][key], "auto");
@@ -280,7 +280,8 @@ class FormJSON {
                             }
                             fielddiv.appendChild(datalist);
                             input.oninput = function(e) {
-                                if(e.inputType!="insertText")
+
+                                if (e.inputType != "insertText")
                                     return;
                                 if (field.dataurl && field.datadisplay && field.datareturn && field.datalength) {
                                     if (e.target.value.length >= field.datalength) {
@@ -288,6 +289,7 @@ class FormJSON {
                                         request.onreadystatechange = function(response) {
                                             if (request.readyState === 4) {
                                                 if (request.status === 200) {
+                                                    datalist.innerHTML = '';
                                                     var jsonOptions = JSON.parse(request.responseText);
 
                                                     if (field.datadepth) {
@@ -312,13 +314,18 @@ class FormJSON {
 
                                         request.open(field.datamethod, field.dataurl, true);
 
-                                        for (var key in field.dataquery)
-                                            if (field.dataquery[key] == "_QUERY")
-                                                field.dataquery[key] = input.value;
+                                        var query = Object.create(field.dataquery);
+
+                                        for (var key in query)
+                                            if (query[key] == "_QUERY")
+                                                query[key] = input.value;
+                                            else
+                                                query[key] = query[key]
 
                                         if (field.datamethod == "POST") {
                                             request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                                            request.send(JSON.stringify(field.dataquery));
+                                            console.log(JSON.stringify(query))
+                                            request.send(JSON.stringify(query));
                                         } else
                                             request.send();
                                     }
