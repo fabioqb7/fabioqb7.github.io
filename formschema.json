@@ -45,7 +45,7 @@
                 "required": true,
                 "hidden": false,
                 "dissabled": false,
-                "defaultValue": "new Date().toString()"
+                "defaultValue": "new Date()"
             },
             {
                 "type": "text",
