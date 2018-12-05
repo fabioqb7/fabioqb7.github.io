@@ -31,7 +31,7 @@
                     "label": "Evaluación Propuesta",
                     "value": "evaluacionPropuesta"
                 }],
-                "defaultValue": "'propuestaProyecto'"
+                "defaultValue": "propuestaProyecto"
             },
             {
                 "type": "date",
@@ -44,8 +44,7 @@
                 "height": "25px",
                 "required": true,
                 "hidden": false,
-                "dissabled": false,
-                "defaultValue": "new Date()"
+                "dissabled": false
             },
             {
                 "type": "text",
@@ -57,7 +56,7 @@
                 "required": true,
                 "hidden": false,
                 "dissabled": true,
-                "defaultValue": "'Borrador'"
+                "defaultValue": "Borrador"
             },
             {
                 "type": "text",
