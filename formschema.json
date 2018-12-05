@@ -31,7 +31,7 @@
                     "label": "Evaluación Propuesta",
                     "value": "evaluacionPropuesta"
                 }],
-                "defaultValue": "propuestaProyecto"
+                "defaultValue": "'propuestaProyecto'"
             },
             {
                 "type": "date",
@@ -45,7 +45,7 @@
                 "required": true,
                 "hidden": false,
                 "dissabled": false,
-                "defaultValue": "moment()"
+                "defaultValue": "new Date().toString()"
             },
             {
                 "type": "text",
@@ -57,7 +57,7 @@
                 "required": true,
                 "hidden": false,
                 "dissabled": true,
-                "defaultValue": "Borrador"
+                "defaultValue": "'Borrador'"
             },
             {
                 "type": "text",
@@ -99,8 +99,7 @@
                 "width": "200px",
                 "required": true,
                 "hidden": false,
-                "dissabled": false,
-                "defaultValue": "moment()"
+                "dissabled": false
             },
             {
                 "key": "fechaFin",
@@ -258,7 +257,6 @@
                 "helperId": "",
                 "width": "80px",
                 "required": true,
-                "defaultValue": 1,
                 "sumary": "sum",
                 "fire": "subtotal"
 

@@ -243,7 +243,7 @@ class FormJSON {
                         input.onchange = function() {
                             thisclass.data[field.key] = input.value;
                         }
-                        input.value = field.value ? field.value : "";
+                        input.value = field.defaultValue ? eval(field.defaultValue) : "";
                         thisclass.data[field.key] = input.value;
                         switch (field.type) {
                         case "list":
