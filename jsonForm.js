@@ -266,6 +266,15 @@ class FormJSON {
                             input.setAttribute("class", "input");
                             input.setAttribute("list", field.key);
 
+                            input.onblur = function(e) {
+                                if (input.lastinput == 'insertText')
+                                    input.value = '';
+                            }
+
+                            input.onselect = function(e) {
+                                console.log(e);
+                            }
+
                             var datalist = document.createElement("datalist");
                             datalist.setAttribute("id", field.key)
 
@@ -281,6 +290,7 @@ class FormJSON {
                             fielddiv.appendChild(datalist);
                             input.oninput = function(e) {
                                 console.log(e);
+                                input.lastinput = e.inputType;
                                 if (e.inputType != "insertText")
                                     return;
                                 if (field.dataurl && field.datadisplay && field.datareturn && field.datalength) {
