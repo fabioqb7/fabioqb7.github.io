@@ -357,7 +357,7 @@ class FormJSON {
                             break;
                         case "hidden":
                             input.setAttribute("type", "hidden");
-                            fielddiv.setAttribute("class", "hidden")
+                            //fielddiv.setAttribute("class", "hidden")
                             input.setAttribute("class", "input")
                             fielddiv.style.setProperty('width', field.width, '');
                             break;
@@ -427,6 +427,8 @@ class FormJSON {
                         if (field.width)
                             input.style.setProperty('width', field.width, '');
 
+                        input.style.setProperty('padding', 'inherit', '');
+                     
                         fielddiv.appendChild(label);
                         fielddiv.appendChild(input);
                         rowdiv.appendChild(fielddiv);
