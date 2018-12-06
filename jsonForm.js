@@ -280,7 +280,7 @@ class FormJSON {
                             }
                             fielddiv.appendChild(datalist);
                             input.oninput = function(e) {
-
+                                console.log(e);
                                 if (e.inputType != "insertText")
                                     return;
                                 if (field.dataurl && field.datadisplay && field.datareturn && field.datalength) {
@@ -324,7 +324,6 @@ class FormJSON {
 
                                         if (field.datamethod == "POST") {
                                             request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                                            console.log(JSON.stringify(query))
                                             request.send(JSON.stringify(query));
                                         } else
                                             request.send();
