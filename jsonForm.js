@@ -256,6 +256,8 @@ class FormJSON {
                                 optiontag.setAttribute("value", option.value);
                                 input.appendChild(optiontag);
                             })
+
+                            input.style.setProperty('-webkit-appearance', 'menulist', '');
                             thisclass.data[field.key] = input.options[input.selectedIndex].value;
                             input.onchange = function() {
                                 thisclass.data[field.key] = input.options[input.selectedIndex].value;
@@ -428,7 +430,7 @@ class FormJSON {
                             input.style.setProperty('width', field.width, '');
 
                         input.style.setProperty('padding', 'inherit', '');
-                     
+
                         fielddiv.appendChild(label);
                         fielddiv.appendChild(input);
                         rowdiv.appendChild(fielddiv);
