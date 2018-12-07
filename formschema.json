@@ -176,7 +176,7 @@
                 "required": false,
                 "hidden": false,
                 "dissabled": true,
-                "value": 1.16
+                "defaultValue": 1.16
             },
             {
                 "key": "relevante",
