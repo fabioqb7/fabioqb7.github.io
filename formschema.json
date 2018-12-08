@@ -278,7 +278,6 @@
                 "width": "80px",
                 "sumary": "sum",
                 "sumform": ["total"],
-                "editor": false,
                 "fire": "total",
                 "expression": "col('precio')*col('cantidad')"
             },
