@@ -256,7 +256,6 @@
                 "helperId": "",
                 "width": "80px",
                 "required": true,
-                "sumary": "sum",
                 "fire": "subtotal"
 
             },
@@ -276,7 +275,6 @@
                 "helper": "",
                 "helperId": "",
                 "width": "80px",
-                "sumary": "sum",
                 "sumform": ["total"],
                 "fire": "total",
                 "expression": "col('precio')*col('cantidad')"

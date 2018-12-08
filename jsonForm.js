@@ -212,6 +212,10 @@ class FormJSON {
                         }
                     };
 
+                    if(colsum.length>0)
+                    hotSettings.columnSummary=colsum
+
+
                     sectiondiv.appendChild(rowdiv);
                     var hot = new Handsontable(hotElement,hotSettings);
                     break;
