@@ -24,19 +24,22 @@
                 "dissabled": false,
                 "list": [
                 {
-                    "label": "Propuesta Proyecto",
-                    "value": "propuestaProyecto"
+                    "label": "Factura",
+                    "value": "factura"
                 },
                 {
-                    "label": "Evaluación Propuesta",
-                    "value": "evaluacionPropuesta"
+                    "label": "Devolucion Venta",
+                    "value": "devolucion"
                 }],
-                "defaultValue": "propuestaProyecto"
+                "defaultValue": "devolucion"
             },
             {
                 "type": "date",
                 "key": "fecha",
-                "label": "Fecha",
+                "dateoptions":{
+                        "defaultDate":"today"
+                },
+                "label": "Fecha Emisión",
                 "dataType": "date",
                 "helper": "date",
                 "helperId": "",
@@ -47,16 +50,31 @@
                 "dissabled": false
             },
             {
-                "type": "text",
+                "type": "list",
                 "key": "estatus",
                 "label": "Estatus",
                 "dataType": "string",
+                "helper": "list",
+                "list": [
+                    {
+                        "label": "BORRADOR",
+                        "value": "draft"
+                    },
+                    {
+                        "label": "PENDIENTE",
+                        "value": "pending"
+                    },
+                    {
+                        "label": "EMITIDO",
+                        "value": "emited"
+                    }
+                ],
                 "width": "200px",
                 "height": "25px",
                 "required": true,
                 "hidden": false,
-                "dissabled": true,
-                "defaultValue": "Borrador"
+                "dissabled": false,
+                "defaultValue": "pending"
             },
             {
                 "type": "text",
@@ -76,11 +94,11 @@
         "hidden": false,
         "frame":
         {
-            "label": "1.- Datos Generales",
+            "label": "Datos Generales",
             "labelColor": "#ffffff",
             "headerHeight": "6px",
             "headerFillColor": "#4eb819",
-            "lineColor": "#45a017",
+            "lineColor": "#989798",
             "lineThick": "1px"
         },
         "rows": [
@@ -123,6 +141,7 @@
                 "required": true,
                 "hidden": false,
                 "dissabled": false,
+                "strict": true,
                 "data": [
                 {
                     "id": 941,
@@ -130,11 +149,11 @@
                 },
                 {
                     "id": 945,
-                    "value": "Estudiantes de â€¦ tÃ©cnico"
+                    "value": "Estudiantes de Técnico"
                 },
                 {
                     "id": 949,
-                    "value": "Estudiantes de â€¦versidad"
+                    "value": "Estudiantes de Universidad"
                 }]
             }]
         },
@@ -144,26 +163,26 @@
             "fields": [
             {
                 "key": "ubicacion",
-                "label": "Marca de Auto",
+                "label": "Ropa",
                 "dataType": "string",
                 "helper": "autocomplete",
                 "type": "autocomplete",
-                "dataurl": "https://mutn3v9t25.execute-api.us-east-1.amazonaws.com/dev/controlpanel",
+                "dataurl": "https://fabioqb7.github.io/prodcutos.json",
                 "datalength": 3,
-                "datadepth":"body.finalResult.data",
-                "datadisplay": "item.NOMBRE",
-                "datareturn": "item.NOMBRE",
+                "datadisplay": "item.desc",
+                "datareturn": "item.desc",
+                "datamethod":"GET",
+                "width": "250px",
+                "required": true,
+                "hidden": false,
+                "dissabled": false,
+                "strict": true,
                 "dataquery":
                 {
                     "bucket": "biforms-control-panel",
                     "file": "autocomplete.json",
                     "masterFilter": "_QUERY"
-                },
-                "datamethod":"POST",
-                "width": "250px",
-                "required": true,
-                "hidden": false,
-                "dissabled": false
+                }
             },
             {
                 "key": "iva",
@@ -176,7 +195,7 @@
                 "required": false,
                 "hidden": false,
                 "dissabled": true,
-                "defaultValue": 1.16
+                "value": 1.16
             },
             {
                 "key": "relevante",
@@ -212,9 +231,9 @@
         {
             "label": "3.- Detalle",
             "labelColor": "#ffffff",
-            "headerHeight": "6px",
-            "headerFillColor": "#4eb819",
-            "lineColor": "#45a017",
+            "headerHeight": "12px",
+            "headerFillColor": "#0099ff",
+            "lineColor": "#989798",
             "lineThick": "1px"
         },
         "rows": [
@@ -223,18 +242,25 @@
             "fields": [
             {
                 "data": "articulo",
-                "title": "Tipo de capacitado",
+                "title": "Item",
                 "factor-bi": "usd8wencsd93ins",
                 "type": "autocomplete",
                 "helper": "autocomplete",
                 "helperId": "8b5a752f-fc7e-45da-96ca-24146a41a712",
                 "width": "150px",
                 "required": true,
-                "dataurl": "https://fabioqb7.github.io/prodcutos.json",
+                "dataurl": "https://mutn3v9t25.execute-api.us-east-1.amazonaws.com/dev/controlpanel",
                 "datalength": 3,
-                "datadisplay": "item.desc",
-                "datareturn": "item.desc",
-                "datamethod":"GET",
+                "datadepth":"body.finalResult.data",
+                "datadisplay": "item.NOMBRE",
+                "datareturn": "item.NOMBRE",
+                "dataquery":
+                {
+                    "bucket": "biforms-control-panel",
+                    "file": "autocomplete.json",
+                    "masterFilter": "_QUERY"
+                },
+                "datamethod":"POST",
                 "strict": true
 
             },
@@ -256,6 +282,8 @@
                 "helperId": "",
                 "width": "80px",
                 "required": true,
+                "defaultValue": 1,
+                "sumary": "sum",
                 "fire": "subtotal"
 
             },
@@ -266,7 +294,12 @@
                 "helper": "",
                 "helperId": "",
                 "width": 200,
-                "fire": "subtotal"
+                "fire": "subtotal",
+                "numericFormat":
+                {
+                    "pattern": "$0,0.00",
+                    "culture": "en-US"
+                }
             },
             {
                 "data": "subtotal",
@@ -275,9 +308,16 @@
                 "helper": "",
                 "helperId": "",
                 "width": "80px",
+                "sumary": "sum",
                 "sumform": ["total"],
+                "editor": false,
                 "fire": "total",
-                "expression": "col('precio')*col('cantidad')"
+                "expression": "col('precio')*col('cantidad')",
+                "numericFormat":
+                {
+                    "pattern": "$0,0.00",
+                    "culture": "en-US"
+                }
             },
             {
                 "data": "total",

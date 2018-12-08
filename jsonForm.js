@@ -111,9 +111,9 @@ class FormJSON {
                         dict[field.data] = field;
                         if (field.type == "autocomplete") {
                             if (field.dataurl && field.datadisplay && field.datareturn && field.datalength) {
-                                field.source = function(query, process) {
+                                field.source = function(search, process) {
                                     var acRow = this;
-                                    if (query.length >= field.datalength) {
+                                    if (search.length >= field.datalength) {
                                         var request = new XMLHttpRequest();
                                         request.onreadystatechange = function(response) {
                                             if (request.readyState === 4) {
@@ -138,13 +138,31 @@ class FormJSON {
                                         }
                                         ;
 
-                                        request.open(field.datamethod, field.dataurl, true);
+                                        if (field.dataquery) {
+                                            var query = Object.create(field.dataquery);
+
+                                            for (var key in query)
+                                                if (query[key] == "_QUERY")
+                                                    query[key] = search;
+                                                else
+                                                    query[key] = query[key]
+                                        }
 
                                         if (field.datamethod == "POST") {
+                                            request.open(field.datamethod, field.dataurl, true);
                                             request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                                            request.send(JSON.stringify(field.dataquery));
-                                        } else
+                                            request.send(JSON.stringify(query));
+                                        } else {
+                                            var str = "?";
+                                            for (var key in query) {
+                                                if (str != "") {
+                                                    str += "&";
+                                                }
+                                                str += key + "=" + encodeURIComponent(query[key]);
+                                            }
+                                            request.open(field.datamethod, field.dataurl + str, true);
                                             request.send();
+                                        }
                                     }
                                 }
 
@@ -209,12 +227,13 @@ class FormJSON {
 
                                 }
                             }
+                            
+                           thisclass.data[row.id?row.id:'table']=hotable.getData();
                         }
                     };
 
-                    if(colsum.length>0)
-                    hotSettings.columnSummary=colsum
-
+                    if (colsum.length > 0)
+                        hotSettings.columnSummary = colsum
 
                     sectiondiv.appendChild(rowdiv);
                     var hot = new Handsontable(hotElement,hotSettings);
@@ -328,21 +347,32 @@ class FormJSON {
                                         while (datalist.firstChild)
                                             datalist.removeChild(datalist.firstChild);
 
-                                        request.open(field.datamethod, field.dataurl, true);
+                                        if (field.dataquery) {
+                                            var query = Object.create(field.dataquery);
 
-                                        var query = Object.create(field.dataquery);
-
-                                        for (var key in query)
-                                            if (query[key] == "_QUERY")
-                                                query[key] = input.value;
-                                            else
-                                                query[key] = query[key]
+                                            for (var key in query)
+                                                if (query[key] == "_QUERY")
+                                                    query[key] = input.value;
+                                                else
+                                                    query[key] = query[key]
+                                        }
 
                                         if (field.datamethod == "POST") {
+                                            request.open(field.datamethod, field.dataurl, true);
                                             request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
                                             request.send(JSON.stringify(query));
-                                        } else
+                                        } else {
+                                            var str = "?";
+                                            for (var key in query) {
+                                                if (str != "") {
+                                                    str += "&";
+                                                }
+                                                str += key + "=" + encodeURIComponent(query[key]);
+                                            }
+                                            request.open(field.datamethod, field.dataurl + str, true);
                                             request.send();
+                                        }
+
                                     }
                                 }
                             }
@@ -370,7 +400,7 @@ class FormJSON {
                         case "date":
                             input.setAttribute("type", "date");
                             input.setAttribute("class", "input")
-                            flatpickr(input, {});
+                            flatpickr(input, field.dateoptions?field.dateoptions:{});
                             break;
                         case "file":
 
