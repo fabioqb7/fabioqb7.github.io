@@ -278,6 +278,12 @@ class FormJSON {
                                 optiontag.appendChild(optiontext);
                                 optiontag.setAttribute("value", option.value);
                                 input.appendChild(optiontag);
+
+                                if(field.defaultValue){
+                                        if(field.defaultValue==option.value)
+                                        optiontag.setAttribute("selected", "selected");
+
+                                }
                             })
 
                             input.style.setProperty('-webkit-appearance', 'menulist', '');
