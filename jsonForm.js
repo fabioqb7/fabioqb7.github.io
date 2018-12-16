@@ -92,13 +92,13 @@ class FormJSON {
                 case "table":
                     var colsum = [];
                     row.fields.forEach(function(column, index) {
-                        //Fields
                         if (column.sumary) {
                             var colus = {
                                 destinationRow: 0,
                                 reversedRowCoords: true,
                                 destinationColumn: index,
-                                type: column.sumary
+                                type: column.sumary,
+                                readOnly: true
                             }
                             colsum.push(colus)
                         }
@@ -177,9 +177,9 @@ class FormJSON {
                     var hotElement = tablediv;
                     var hotElementContainer = rowdiv;
                     var hotSettings = {
-                        columnSummary: colsum,
                         columns: row.fields,
                         contextMenu: true,
+                        rowHeaders: true,
                         manualColumnResize: true,
                         columnSorting: true,
                         afterChange: function(change, source) {
@@ -220,20 +220,20 @@ class FormJSON {
                                                     sum = +obj;
                                             })
 
-                                            setFormVal(data, sum);
+                                            setFormVal(data, numbro(sum).format(dict[change[0][1]].numericFormat.pattern || '0'));
                                         });
 
                                     }
 
                                 }
                             }
-                            
-                           thisclass.data[row.id?row.id:'table']=hotable.getData();
+
+                            thisclass.data[row.id ? row.id : 'table'] = hotable.getData();
                         }
                     };
 
-                    if (colsum.length > 0)
-                        hotSettings.columnSummary = colsum
+                    //if (colsum.length > 0)
+                    //    hotSettings.columnSummary = colsum
 
                     sectiondiv.appendChild(rowdiv);
                     var hot = new Handsontable(hotElement,hotSettings);
@@ -279,8 +279,8 @@ class FormJSON {
                                 optiontag.setAttribute("value", option.value);
                                 input.appendChild(optiontag);
 
-                                if(field.defaultValue){
-                                        if(field.defaultValue==option.value)
+                                if (field.defaultValue) {
+                                    if (field.defaultValue == option.value)
                                         optiontag.setAttribute("selected", "selected");
 
                                 }
@@ -312,7 +312,7 @@ class FormJSON {
                             if (field.data) {
                                 field.data.forEach(function(option) {
                                     var optiontag = document.createElement("option");
-                                    var optiontext = document.createTextNode(option.label);
+                                    var optiontext = document.createTextNode(option.id);
                                     optiontag.appendChild(optiontext);
                                     optiontag.setAttribute("value", option.value);
                                     datalist.appendChild(optiontag);
@@ -406,7 +406,7 @@ class FormJSON {
                         case "date":
                             input.setAttribute("type", "date");
                             input.setAttribute("class", "input")
-                            flatpickr(input, field.dateoptions?field.dateoptions:{});
+                            flatpickr(input, field.dateoptions ? field.dateoptions : {});
                             break;
                         case "file":
 
@@ -490,11 +490,15 @@ class FormJSON {
             });
             thisclass.container.appendChild(sectiondiv)
             thisclass.quill = new Quill('.editor',{
-                theme: 'snow'
+                theme: 'snow',
+                placeholder: 'Escribe aquí ...'
             });
+
 
             //console.log(thisclass.quill)
         });
+
+        thisclass.quill.setText('\n\n\n\n\n');
 
     }
 
