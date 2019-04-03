@@ -5,6 +5,9 @@ class FormJSON {
         var thisclass = this;
         thisclass.data = {};
 
+        this.fields=[];
+        this.quills=[];
+
         if (cont)
             thisclass.container = document.getElementById(cont);
         else
@@ -217,10 +220,15 @@ class FormJSON {
                                             var sum = 0;
                                             hotable.getDataAtProp(change[0][1]).forEach(function(obj, index) {
                                                 if (typeof obj == 'number')
-                                                    sum = +obj;
+                                                    sum = sum+obj;
                                             })
-
-                                            setFormVal(data, numbro(sum).format(dict[change[0][1]].numericFormat.pattern || '0'));
+                                            if(dict[change[0][1]].numericFormat){
+                                                    setFormVal(data, numbro(sum).format(dict[change[0][1]].numericFormat.pattern || '0'));
+                                            }
+                                            else{
+                                                    setFormVal(data, numbro(sum).format('0'));
+                                            }
+                                            
                                         });
 
                                     }
@@ -237,6 +245,7 @@ class FormJSON {
 
                     sectiondiv.appendChild(rowdiv);
                     var hot = new Handsontable(hotElement,hotSettings);
+                    thisclass.fields[row.key]={element:hot,type:'table'}
                     break;
                 case "row":
                     rowdiv.setAttribute("class", "row");
@@ -263,6 +272,7 @@ class FormJSON {
                         }
 
                         var input = document.createElement("input");
+
                         input.onchange = function() {
                             thisclass.data[field.key] = input.value;
                         }
@@ -271,6 +281,7 @@ class FormJSON {
                         switch (field.type) {
                         case "list":
                             input = document.createElement("select");
+                            thisclass.fields[field.key]={element:input,type:'list'}
                             input.setAttribute("class", "input")
                             field.list.forEach(function(option) {
                                 var optiontag = document.createElement("option");
@@ -294,6 +305,7 @@ class FormJSON {
                             break;
                         case "autocomplete":
 
+                            thisclass.fields[field.key]={element:input,type:'autocomplete'}
                             input.setAttribute("class", "input");
                             input.setAttribute("list", field.key);
 
@@ -385,6 +397,7 @@ class FormJSON {
                             break;
                         case "radio":
                             input = document.createElement("div");
+                            thisclass.fields[field.key]={element:input,type:'radio'}
                             input.setAttribute("style", "display: inline;")
                             input.setAttribute("class", "input")
                             field.list.forEach(function(option) {
@@ -398,22 +411,24 @@ class FormJSON {
                             })
                             break;
                         case "hidden":
+                            thisclass.fields[field.key]={element:input,type:'autocomplete'}
                             input.setAttribute("type", "hidden");
                             //fielddiv.setAttribute("class", "hidden")
                             input.setAttribute("class", "input")
                             fielddiv.style.setProperty('width', field.width, '');
                             break;
                         case "date":
+                            thisclass.fields[field.key]={element:input,type:'date'}
                             input.setAttribute("type", "date");
                             input.setAttribute("class", "input")
                             flatpickr(input, field.dateoptions ? field.dateoptions : {});
                             break;
                         case "file":
-
                             input.setAttribute("type", "file");
                             input.setAttribute("class", "input")
 
                             var displayinput = document.createElement("input")
+                            thisclass.fields[field.key]={element:displayinput,type:'file'}
                             displayinput.setAttribute("type", "hidden");
                             displayinput.setAttribute("id", field.key);
 
@@ -460,11 +475,15 @@ class FormJSON {
                             break;
                         default:
                             input.setAttribute("type", "text");
+                            thisclass.fields[field.key]={element:input,type:'text'}
                             break;
 
                         }
-
                         input.setAttribute("id", field.key);
+
+                        if (field.disabled) {
+                            input.disabled = true;
+                        }
 
                         if (field.width)
                             input.style.setProperty('width', field.width, '');
@@ -480,7 +499,9 @@ class FormJSON {
                     break;
                 case "textarea":
                     var input = document.createElement("div");
-                    //new Quill(input,{ theme: 'snow' });
+
+                    thisclass.quills.push({element:input,key:row.key})
+                    thisclass.fields[row.key]={element:input,type:'quill'}
                     input.setAttribute("class", "editor")
                     rowdiv.appendChild(input);
                     sectiondiv.appendChild(rowdiv);
@@ -489,16 +510,26 @@ class FormJSON {
 
             });
             thisclass.container.appendChild(sectiondiv)
-            thisclass.quill = new Quill('.editor',{
-                theme: 'snow',
-                placeholder: 'Escribe aquí ...'
-            });
 
+            try{
+                for(var i=0;i<thisclass.quills.length;i++){
+                    var obj=thisclass.quills[i];
+                    var quill=new Quill(obj.element,{
+                        theme: 'snow',
+                        placeholder: 'Escribe aquí ...'
+                    });
+                    thisclass.fields[obj.key] = {type:'quill',element:quill};
+                    quill.setText('\n\n\n\n\n');
+                }
+            }catch(ex){
+
+            }
+           
 
             //console.log(thisclass.quill)
         });
 
-        thisclass.quill.setText('\n\n\n\n\n');
+        
 
     }
 
@@ -527,6 +558,21 @@ class FormJSON {
         else
             return this.data;
     }
+
+    setData(data){
+        console.log(data);
+        for (var key in data){
+            this.setField(key,data[key])
+        }
+
+    }
+
+    setField(key,val){
+        console.log(key);
+        document.getElementById(key).value=val;
+    }
+
+
 
     print() {
         var myWindow = window.open('', 'my div', 'height=400,width=600');
