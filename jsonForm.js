@@ -217,10 +217,15 @@ class FormJSON {
                                             var sum = 0;
                                             hotable.getDataAtProp(change[0][1]).forEach(function(obj, index) {
                                                 if (typeof obj == 'number')
-                                                    sum = +obj;
+                                                    sum = sum+obj;
                                             })
-
-                                            setFormVal(data, numbro(sum).format(dict[change[0][1]].numericFormat.pattern || '0'));
+                                            if(dict[change[0][1]].numericFormat){
+                                                    setFormVal(data, numbro(sum).format(dict[change[0][1]].numericFormat.pattern || '0'));
+                                            }
+                                            else{
+                                                    setFormVal(data, numbro(sum).format('0'));
+                                            }
+                                            
                                         });
 
                                     }
@@ -263,6 +268,7 @@ class FormJSON {
                         }
 
                         var input = document.createElement("input");
+
                         input.onchange = function() {
                             thisclass.data[field.key] = input.value;
                         }
@@ -466,6 +472,10 @@ class FormJSON {
 
                         input.setAttribute("id", field.key);
 
+                        if (field.disabled) {
+                            input.disabled = true;
+                        }
+
                         if (field.width)
                             input.style.setProperty('width', field.width, '');
 
@@ -493,7 +503,6 @@ class FormJSON {
                 theme: 'snow',
                 placeholder: 'Escribe aquí ...'
             });
-
 
             //console.log(thisclass.quill)
         });
@@ -527,6 +536,21 @@ class FormJSON {
         else
             return this.data;
     }
+
+    setData(data){
+        console.log(data);
+        for (var key in data){
+            this.setField(key,data[key])
+        }
+
+    }
+
+    setField(key,val){
+        console.log(key);
+        document.getElementById(key).value=val;
+    }
+
+
 
     print() {
         var myWindow = window.open('', 'my div', 'height=400,width=600');
