@@ -522,11 +522,9 @@ class FormJSON {
                     quill.setText('\n\n\n\n\n');
                 }
             }catch(ex){
-
+                console.log(ex)
             }
            
-
-            //console.log(thisclass.quill)
         });
 
         
