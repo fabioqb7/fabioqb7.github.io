@@ -225,6 +225,7 @@
         "rows": [
         {
             "type": "table",
+            "key":"tabla",
             "fields": [
             {
                 "data": "articulo",
