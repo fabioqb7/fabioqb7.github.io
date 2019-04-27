@@ -1,12 +1,13 @@
 class FormJSON {
 
-    constructor(json, cont) {
-
+    constructor(json, cont, cbdraw) {
         var thisclass = this;
         thisclass.data = {};
 
         this.fields = {};
         this.quills = [];
+
+        this.afterdraw = cbdraw;
 
         if (cont)
             thisclass.container = document.getElementById(cont);
@@ -43,13 +44,10 @@ class FormJSON {
         }
 
         loadjs(function () {
-            console.log("all donde");
-
             if (typeof json == 'object') {
                 thisclass.schema = json;
                 thisclass.draw();
             }
-
             if (typeof json == "string") {
                 thisclass.getURL(json, function (err, text) {
                     if (!err) {
@@ -71,7 +69,11 @@ class FormJSON {
         var setFormVal = function (key, val) {
             document.getElementById(key).value = val;
         }
-        this.schema.elements.forEach(function (section) {
+        
+
+        //this.schema.elements.forEach(function (section) {
+        for(var k=0; k<this.schema.elements.length;k++){
+            var section = this.schema.elements[k];
 
             var sectiondiv = document.createElement("section");
             sectiondiv.setAttribute("class", "section")
@@ -87,9 +89,10 @@ class FormJSON {
                 sectiondiv.appendChild(framediv);
 
             }
-            section.rows.forEach(function (row) {
+            for(var ir=0;ir<section.rows.length;ir++){
+                var row=section.rows[ir];
+            //section.rows.forEach(function (row) {
                 // Row
-
                 var rowdiv = document.createElement("div");
                 switch (row.type) {
                     case "table":
@@ -110,7 +113,8 @@ class FormJSON {
                         tablediv.setAttribute("id", "hot");
                         rowdiv.appendChild(tablediv);
                         var dict = {};
-                        row.fields.forEach(function (field, index) {
+                        for(var index=0;index<row.fields.length;index++){
+                            var field=row.fields[index];
                             dict[field.data] = field;
                             if (field.type == "autocomplete") {
                                 if (field.dataurl && field.datadisplay && field.datareturn && field.datalength) {
@@ -171,7 +175,8 @@ class FormJSON {
 
                                 }
                             }
-                        });
+                      
+                        }
 
                         row.fields[1].options = {
                             items: Infinity
@@ -249,8 +254,8 @@ class FormJSON {
                         break;
                     case "row":
                         rowdiv.setAttribute("class", "row");
-                        row.fields.forEach(function (field) {
-
+                        for(var inf=0;inf<row.fields.length;inf++){
+                            var field=row.fields[inf];
                             var fielddiv = document.createElement("div");
                             fielddiv.setAttribute("class", "fielddiv");
                             //fielddiv.style.setProperty("display","inline","")
@@ -494,7 +499,8 @@ class FormJSON {
                             fielddiv.appendChild(input);
                             rowdiv.appendChild(fielddiv);
 
-                        });
+                        
+                    }
                         sectiondiv.appendChild(rowdiv);
                         break;
                     case "textarea":
@@ -508,7 +514,8 @@ class FormJSON {
                         break;
                 }
 
-            });
+            //});
+            }
             thisclass.container.appendChild(sectiondiv)
 
             try {
@@ -525,9 +532,11 @@ class FormJSON {
                 console.log(ex)
             }
 
-        });
+        //}); forech
+    }//for
 
-
+    if(thisclass.afterdraw)
+        thisclass.afterdraw();
 
     }
 
@@ -622,7 +631,6 @@ class FormJSON {
             return data;
         }
     }
-
 
     setField(key, data) {
         var field = this.fields[key];
