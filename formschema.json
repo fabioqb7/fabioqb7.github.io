@@ -1,370 +1,405 @@
 {
-    "label": "Capacitación",
-    "type": "jsonform",
-    "elements": [
+	"label": "",
+	"type": "jsonform",
+	"elements": [
     {
-        "type": "section",
-        "hidden": false,
-        "rows": [
+			"type": "section",
+			"hidden": false,
+			"frame": {
+				"label": "VIAJE EN CURSO",
+				"labelColor": "#ffffff",
+				"headerHeight": "16px",
+				"headerFillColor": "#43a047",
+				"lineColor": "#43a047",
+				"lineThick": "1px"
+			},
+			"rows": [
         {
-            "type": "row",
-            "height": "25px",
-            "fields": [
+					"type": "row",
+					"height": "25px",
+					"fields": [
             {
-                "type": "list",
-                "key": "documento",
-                "label": "Documento",
-                "dataType": "string",
-                "width": "200px",
-                "height": "25px",
-                "required": true,
-                "hidden": false,
-                "disabled": true,
-                "list": [
-                {
-                    "label": "Factura",
-                    "value": "factura"
-                },
-                {
-                    "label": "Devolucion Venta",
-                    "value": "devolucion"
-                }],
-                "defaultValue": "devolucion"
-            },
+							"key": "documento",
+							"label": "Documento",
+							"type": "list",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false,
+							"list": [{
+								"label": "Viaje",
+								"value": "Viaje"
+							}],
+							"defaultValue": "Viaje"
+						},
+						{
+							"key": "fecha",
+							"label": "Fecha",
+							"type": "date",
+							"dataType": "date",
+							"width": "200px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false,
+							"dateoptions": {
+								"defaultDate": "today"
+							}
+						},
+						{
+							"key": "estatus",
+							"label": "Estatus",
+							"type": "text",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": false,
+							"hidden": false,
+							"disabled": true,
+							"defaultValue": "BORRADOR"
+						},
+						{
+							"key": "folio",
+							"label": "Folio",
+							"type": "text",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": false,
+							"hidden": false,
+							"disabled": true
+						}
+					]
+				},
+				{
+					"type": "row",
+					"height": "25px",
+					"fields": [
             {
-                "type": "date",
-                "key": "fecha",
-                "dateoptions":{
-                        "defaultDate":"today"
-                },
-                "label": "Fecha Emisión",
-                "dataType": "date",
-                "width": "200px",
-                "height": "25px",
-                "required": true,
-                "hidden": false,
-                "disabled": false
-            },
+							"key": "proveedor",
+							"label": "Agricultor",
+							"type": "autocomplete",
+							"dataType": "string",
+							"dataurl": "https://s3.amazonaws.com/formjson/agricultores.json",
+							"datalength": 3,
+							"datadisplay": "item.nombre",
+							"datareturn": "item.nombre",
+							"datamethod": "GET",
+							"strict": true,
+							"width": "412px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false
+						},
+						{
+							"key": "viaje",
+							"label": "Viaje Número",
+							"type": "text",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false
+						},
+						{
+							"key": "almacen",
+							"label": "Almacén",
+							"type": "text",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": false,
+							"hidden": false,
+							"disabled": true,
+							"defaultValue": "(TRANSITO)"
+						}
+					]
+				},
+				{
+					"type": "row",
+					"height": "25px",
+					"fields": [
             {
-                "type": "list",
-                "key": "estatus",
-                "label": "Estatus",
-                "dataType": "string",
-                "list": [
-                    {
-                        "label": "BORRADOR",
-                        "value": "draft"
-                    },
-                    {
-                        "label": "PENDIENTE",
-                        "value": "pending"
-                    },
-                    {
-                        "label": "EMITIDO",
-                        "value": "emited"
-                    }
-                ],
-                "width": "200px",
-                "height": "25px",
-                "required": true,
-                "hidden": false,
-                "disabled": false,
-                "defaultValue": "pending"
-            },
+						"key": "observaciones",
+						"label": "Observaciones",
+						"type": "text",
+						"dataType": "string",
+						"width": "840px",
+						"height": "25px",
+						"required": true,
+						"hidden": false,
+						"disabled": false
+					}]
+				}
+			]
+		},
+		{
+			"type": "section",
+			"hidden": false,
+			"frame": {
+				"label": "Transporte",
+				"labelColor": "#ffffff",
+				"headerHeight": "6px",
+				"headerFillColor": "#43a047",
+				"lineColor": "#43a047",
+				"lineThick": "1px"
+			},
+			"rows": [{
+					"type": "row",
+					"height": "45px",
+					"fields": [{
+							"key": "fechaEnvio",
+							"label": "Fecha Envío",
+							"type": "date",
+							"dataType": "date",
+							"width": "200px",
+							"required": true,
+							"hidden": false,
+							"disabled": false
+						},
+						{
+							"key": "pesoEmbarcado",
+							"label": "Kg Embar",
+							"type": "numeric",
+							"dataType": "numeric",
+							"width": "100px",
+							"required": true,
+							"hidden": false,
+							"disabled": false
+						},
+						{
+							"key": "transportista",
+							"label": "Transportista",
+							"type": "autocomplete",
+							"dataurl": "https://fabioqb7.github.io/prodcutos.json",
+							"datalength": 3,
+							"datadisplay": "item.desc",
+							"datareturn": "item.desc",
+							"datamethod": "GET",
+							"dataType": "string",
+							"width": "350px",
+							"required": false,
+							"hidden": false,
+							"disabled": false
+						}
+					]
+				},
+				{
+					"type": "row",
+					"height": "45px",
+					"fields": [{
+							"key": "fechaRecepcion",
+							"label": "Fecha Recepción",
+							"type": "date",
+							"dataType": "date",
+							"width": "200px",
+							"required": false,
+							"hidden": false,
+							"disabled": false
+						},
+						{
+							"key": "pesoRecibido",
+							"label": "Kg Recibido",
+							"type": "numeric",
+							"dataType": "numeric",
+							"width": "100px",
+							"required": false,
+							"hidden": false,
+							"disabled": false
+						},
+						{
+							"key": "conductor",
+							"label": "Conductor",
+							"type": "text",
+							"dataType": "string",
+							"width": "350px",
+							"required": false,
+							"hidden": false,
+							"disabled": false
+						}
+					]
+				},
+				{
+					"type": "row",
+					"height": "45px",
+					"fields": [{
+						"key": "referencia2",
+						"label": "Carta Porte",
+						"type": "text",
+						"dataType": "string",
+						"width": "200px",
+						"required": false,
+						"hidden": false,
+						"disabled": false
+					}]
+				}
+			]
+		},
+		{
+			"type": "section",
+			"hidden": false,
+			"frame": {
+				"label": "Producto",
+				"labelColor": "#ffffff",
+				"headerHeight": "6px",
+				"headerFillColor": "#43a047",
+				"lineColor": "#43a047",
+				"lineThick": "1px"
+			},
+			"rows": [{
+					"type": "table",
+					"key":"table",
+					"fields": [
             {
-                "type": "text",
-                "key": "folio",
-                "label": "Folio",
-                "dataType": "string",
-                "width": "200px",
-                "height": "25px",
-                "required": true,
-                "hidden": false,
-                "disabled": true
-            }]
-        }]
-    },
-    {
-        "type": "section",
-        "hidden": false,
-        "frame":
-        {
-            "label": "Datos Generales",
-            "labelColor": "#ffffff",
-            "headerHeight": "6px",
-            "headerFillColor": "#4eb819",
-            "lineColor": "#989798",
-            "lineThick": "1px"
-        },
-        "rows": [
-        {
-            "type": "row",
-            "height": "45px",
-            "fields": [
+							"data": "articulo",
+							"title": "Tamaño",
+							"type": "autocomplete",
+							"width": "150px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/articulos-tamano.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.descripcion",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "cantidad2",
+							"title": "Kg Embar",
+							"type": "numeric",
+							"width": "100px",
+							"required": true,
+              "fire": "importe",
+              "sumform": ["totalCantidad2"]
+						},
+						{
+							"data": "cantidad",
+							"title": "Arp-Cjs Embar",
+							"type": "numeric",
+							"width": "100px",
+							"required": true,
+							"sumary": "sum",
+							"sumform": ["totalCantidad"]
+						},
             {
-                "key": "fechaInicio",
-                "label": "Fecha Inicio",
-                "dataType": "date",
-                "type": "date",
-                "width": "200px",
-                "required": true,
-                "hidden": false,
-                "disabled": false
-            },
+							"data": "unidad",
+							"title": "Empaque",
+							"type": "autocomplete",
+							"width": "100px",
+							"required": true,
+              "dataurl": "https://s3.amazonaws.com/formjson/articulos-unidad.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.descripcion",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "precio",
+							"title": "Precio",
+							"type": "numeric",
+							"width": "100px",
+							"fire": "importe",
+							"numericFormat": {
+								"pattern": "$0,0.00",
+								"culture": "en-US"
+							}
+						},
             {
-                "key": "fechaFin",
-                "label": "Fecha Fin",
-                "dataType": "date",
-                "type": "date",
-                "width": "200px",
-                "required": true,
-                "hidden": false,
-                "disabled": false
-            },
+							"data": "variedad",
+							"title": "Variedad",
+							"type": "autocomplete",
+							"width": "120px",
+							"required": true,
+							"dataurl": "A",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.descripcion",
+							"datamethod": "GET",
+							"strict": true
+						},
             {
-                "key": "proyecto",
-                "label": "Proyecto",
-                "dataType": "string",
-                "type": "autocomplete",
-                "width": "400px",
-                "required": true,
-                "hidden": false,
-                "disabled": false,
-                "strict": true,
-                "data": [
-                {
-                    "id": 941,
-                    "value": "Estudiantes de Primaria"
-                },
-                {
-                    "id": 945,
-                    "value": "Estudiantes de Técnico"
-                },
-                {
-                    "id": 949,
-                    "value": "Estudiantes de Universidad"
-                }]
-            }]
-        },
-        {
-            "type": "row",
-            "height": "45px",
-            "fields": [
-            {
-                "key": "ubicacion",
-                "label": "Ropa",
-                "dataType": "string",
-                "type": "autocomplete",
-                "dataurl": "https://fabioqb7.github.io/prodcutos.json",
-                "datalength": 3,
-                "datadisplay": "item.desc",
-                "datareturn": "item.desc",
-                "datamethod":"GET",
-                "width": "250px",
-                "required": true,
-                "hidden": false,
-                "disabled": false,
-                "strict": true,
-                "dataquery":
-                {
-                    "bucket": "biforms-control-panel",
-                    "file": "autocomplete.json",
-                    "masterFilter": "_QUERY"
-                }
-            },
-            {
-                "key": "iva",
-                "label": "IVA",
-                "dataType": "numeric",
-                "type": "numeric",
-                "width": "250px",
-                "required": false,
-                "hidden": false,
-                "disabled": true,
-                "defaultValue": 1.16
-            },
-            {
-                "key": "relevante",
-                "label": "Información relevante para reporte de avances",
-                "dataType": "int",
-               
-                "type": "radio",
-      
-                "width": "250px",
-                "required": false,
-                "hidden": false,
-                "disabled": false,
-                "list": [
-                {
-                    "label": "Si",
-                    "value": 1
-                },
-                {
-                    "label": "No",
-                    "value": 0
-                },
-                {
-                    "label": "NA",
-                    "value": 3
-                }]
-            }]
-        }]
-    },
-    {
-        "type": "section",
-        "hidden": false,
-        "frame":
-        {
-            "label": "3.- Detalle",
-            "labelColor": "#ffffff",
-            "headerHeight": "12px",
-            "headerFillColor": "#0099ff",
-            "lineColor": "#989798",
-            "lineThick": "1px"
-        },
-        "rows": [
-        {
-            "type": "table",
-            "key":"tabla",
-            "fields": [
-            {
-                "data": "articulo",
-                "title": "Item",
-                "type": "autocomplete",
-                "width": "150px",
-                "required": true,
-                "dataurl": "https://mutn3v9t25.execute-api.us-east-1.amazonaws.com/dev/controlpanel",
-                "datalength": 3,
-                "datadepth":"body.finalResult.data",
-                "datadisplay": "item.NOMBRE",
-                "datareturn": "item.NOMBRE",
-                "dataquery":
-                {
-                    "bucket": "biforms-control-panel",
-                    "file": "autocomplete.json",
-                    "masterFilter": "_QUERY"
-                },
-                "datamethod":"POST",
-                "strict": true
+							"data": "calificacion",
+							"title": "Calificacion",
+							"type": "autocomplete",
+							"width": "120px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/articulos-calificacion.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.descripcion",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "importe",
+							"title": "Importe",
+							"type": "numeric",
+							"width": "100px",
+							"sumary": "sum",
+							"sumform": ["subTotal"],
+							"editor": false,
+							"expression": "col('cantidad2')*col('precio')",
+							"numericFormat": {
+								"pattern": "$0,0.00",
+								"culture": "en-US"
+							}
+						}
+					]
+				},
+				{
+					"type": "row",
+					"fields": [{
+							"key": "blank1",
+							"width": "150px",
+							"type": "hidden",
+							"hidden": true
+						},
+						{
+							"key": "totalCantidad2",
+							"label": "Kg Embar",
+							"type": "numeric",
+							"width": "100px",
+              "disabled": true
+						},
+						{
+							"key": "totalCantidad",
+							"label": "Arp-Cjs Embar",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						},
+						{
+							"key": "subTotal",
+							"label": "SubTotal",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						}
+					]
+				},
+				{
+					"type": "textarea",
+					"key": "notas",
+					"label": "Notas"
+				},
+				{
+					"type": "row",
+					"fields": [{
+						"key": "file",
+						"label": "Anexos",
+						"type": "file",
+						"s3BucketName": "formjson",
+						"s3BucketRegion": "us-east-1",
+						"s3IdentityPoolId": "us-east-1:13b6adc6-fff1-4033-bcad-dfd5f0fea671"
 
-            },
-            {
-                "data": "UNIDAD_VENTA",
-                "title": "Unidad de medida",
-                "type": "text",
-                "width": "150px",
-                "required": true,
-                "disabled": true
-            },
-            {
-                "data": "cantidad",
-                "title": "Cantidad",
-                "type": "numeric",
-                "width": "80px",
-                "required": true,
-                "defaultValue": 1,
-                "sumary": "sum",
-                "fire": "subtotal",
-                "sumform": ["total2"]
-
-            },
-            {
-                "data": "precio",
-                "title": "Precio",
-                "type": "numeric",
-                "width": 200,
-                "fire": "subtotal",
-                "numericFormat":
-                {
-                    "pattern": "$0,0.00",
-                    "culture": "en-US"
-                }
-            },
-            {
-                "data": "subtotal",
-                "title": "Subtotal",
-                "type": "numeric",
-                "width": "80px",
-                "sumary": "sum",
-                "sumform": ["total"],
-                "editor": false,
-                "fire": "total",
-                "expression": "col('precio')*col('cantidad')",
-                "numericFormat":
-                {
-                    "pattern": "$0,0.00",
-                    "culture": "en-US"
-                }
-            },
-            {
-                "data": "total",
-                "title": "Total",
-                "type": "numeric",
-                "width": "80px",
-                "expression": "col('subtotal')*form('iva')",
-                "sumform": ["grantotal"],
-                "editor": false,
-                "numericFormat":
-                {
-                    "pattern": "$0,0.00",
-                    "culture": "en-US"
-                }
-            }]
-        },
-        {
-            "type": "row",
-            "fields": [
-            {
-                "key": "blank1",
-                "width": "200px",
-                "type": "hidden",
-                "hidden": true
-            },
-            {
-                "key": "totales1",
-                "label": "Totales:",
-                "type": "hidden",
-                "width": "100px"
-            },
-            {
-                "key": "total2",
-                "label": "",
-                "type": "numeric",
-                "width": "100px",
-                "disabled": true
-            },
-            {
-                "key": "total",
-                "label": "",
-                "type": "numeric",
-                "width": "100px",
-                "disabled": true
-            },
-            {
-                "key": "grantotal",
-                "label": "",
-                "type": "numeric",
-                "width": "100px",
-                "disabled": true
-            }]
-        },
-        {
-            "type": "textarea",
-            "key": "texto2",
-            "label": "Descripción de la actividad"
-        },
-        {
-            "type": "row",
-            "fields": [
-            {
-                "key": "file",
-                "label": "Documento",
-                "type": "file",
-                "s3BucketName": "formjson",
-                "s3BucketRegion": "us-east-1",
-                "s3IdentityPoolId": "us-east-1:13b6adc6-fff1-4033-bcad-dfd5f0fea671"
-
-            }]
-        }]
-    }]
+					}]
+				}
+			]
+		}
+	]
 }
