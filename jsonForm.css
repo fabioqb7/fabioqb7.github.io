@@ -17,10 +17,11 @@
     margin: 7px;
 }
 
-.row{
+.rowjf{
     display: flex;
     /* margin: 7px; */
 }
+
 
 .fielddiv{
     float: left;

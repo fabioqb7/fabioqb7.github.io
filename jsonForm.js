@@ -37,7 +37,7 @@ class FormJSON {
                     loadjs(callback);
                 }
                 ;
-                document.head.appendChild(script);
+                thisclass.container.appendChild(script);
             } else
                 callback();
 
@@ -196,6 +196,7 @@ class FormJSON {
                         columnSorting: true,
                         afterChange: function(change, source) {
                             var hotable = this;
+                            var dict = hotable.dict;
                             if (change) {
                                 var metaData = hotable.getCellMeta(change[0][0], hotable.propToCol(change[0][1]));
                                 if (metaData.data && metaData.pivot) {
@@ -253,13 +254,15 @@ class FormJSON {
 
                     sectiondiv.appendChild(rowdiv);
                     var hot = new Handsontable(hotElement,hotSettings);
-                    thisclass.fields[row.key] = {
+                    hot.dict=dict;
+                    thisclass.fields[row.key?row.key:row.table] = {
                         element: hot,
-                        type: 'table'
+                        type: 'table',
+                        table: row.table
                     }
                     break;
                 case "row":
-                    rowdiv.setAttribute("class", "row");
+                    rowdiv.setAttribute("class", "rowjf");
                     for (var inf = 0; inf < row.fields.length; inf++) {
                         var field = row.fields[inf];
                         var fielddiv = document.createElement("div");
@@ -294,7 +297,8 @@ class FormJSON {
                             input = document.createElement("select");
                             thisclass.fields[field.key] = {
                                 element: input,
-                                type: 'list'
+                                type: 'list',
+                                table: field.table?field.table:row.table
                             }
                             input.setAttribute("class", "input")
                             field.list.forEach(function(option) {
@@ -323,6 +327,8 @@ class FormJSON {
                             input.setAttribute("class", "input");
                             input.setAttribute("class", "autocomplete");
                             input.setAttribute("autocomplete", "off");
+
+
                            
 
                             var inputbox = document.createElement("input");
@@ -331,112 +337,23 @@ class FormJSON {
                             inputbox.setAttribute("autocomplete", "off");
                             inputbox.fieldSetts = field;
 
+                            inputbox.style.setProperty('width', field.width, '');
+
                             thisclass.fields[field.key] = {
                                 element: inputbox,
-                                type: 'autocomplete'
+                                type: 'autocomplete',
+                                table: field.table?field.table:row.table
                             }
 
                             autocomplete(inputbox, field.data);
-
                             input.appendChild(inputbox);
-
-                           
-
-                            /*
-
-                            input.oninput = function(e) {
-                                let fieldA = e.target.datafield;
-                                let datalist = e.target.datalist;
-                                let fielddiv = e.target.fielddiv;
-
-                                if (fieldA.requestInput)
-                                    fieldA.requestInput.abort();
-
-
-                               
-
-                             
-
-                                input.lastinput = e.inputType;
-                                if (e.inputType != "insertText")
-                                    return;
-
-                                if (fieldA.dataurl && fieldA.datadisplay && fieldA.datareturn && fieldA.datalength) {
-
-                                    if (e.target.value.length >= fieldA.datalength) {
-                                        var request = new XMLHttpRequest();
-                                        fieldA.requestInput = request;
-                                        request.onreadystatechange = function(response) {
-                                            if (request.readyState === 4) {
-                                                if (request.status === 200) {
-                                                    datalist.innerHTML = '';
-                                                    var jsonOptions = JSON.parse(request.responseText);
-
-                                                    if (fieldA.datadepth) {
-                                                        jsonOptions = eval("jsonOptions." + fieldA.datadepth);
-                                                    }
-
-                                                    var datal = document.createElement("datalist");
-                                                    datal.setAttribute("id", fieldA.key)
-
-                                                    for (let i = 0; i < jsonOptions.length; i++) {
-                                                        let item = jsonOptions[i];
-                                                        var option = document.createElement('option');
-                                                        option.value = eval(fieldA.datadisplay);
-                                                        datal.appendChild(option);
-                                                    }
-
-                                                    fielddiv.removeChild(fielddiv.firstChild);
-                                                    fielddiv.insertBefore(datal,fielddiv.firstChild);
-
-                                                    input.placeholder = "Escribe";
-                                                } else
-                                                    input.placeholder = "Couldn't load datalist options";
-
-                                            }
-                                        }
-                                        
-                                        input.placeholder = "Cargando...";
-                                        while (datalist.firstChild)
-                                            datalist.removeChild(datalist.firstChild);
-
-                                        if (fieldA.dataquery) {
-                                            var query = Object.create(fieldA.dataquery);
-
-                                            for (var key in query)
-                                                if (query[key] == "_QUERY")
-                                                    query[key] = input.value;
-                                                else
-                                                    query[key] = query[key]
-                                        }
-
-                                        if (fieldA.datamethod == "POST") {
-                                            request.open(fieldA.datamethod, fieldA.dataurl, true);
-                                            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                                            request.send(JSON.stringify(query));
-                                        } else {
-                                            var str = "?";
-                                            for (var key in query) {
-                                                if (str != "") {
-                                                    str += "&";
-                                                }
-                                                str += key + "=" + encodeURIComponent(query[key]);
-                                            }
-                                            request.open(fieldA.datamethod, fieldA.dataurl + str, true);
-                                            request.send();
-                                        }
-
-                                    }
-                                }
-                            }
-
-                            */
                             break;
                         case "radio":
                             input = document.createElement("div");
                             thisclass.fields[field.key] = {
                                 element: input,
-                                type: 'radio'
+                                type: 'radio',
+                                table: field.table?field.table:row.table
                             }
                             input.setAttribute("style", "display: inline;")
                             input.setAttribute("class", "input")
@@ -453,7 +370,8 @@ class FormJSON {
                         case "hidden":
                             thisclass.fields[field.key] = {
                                 element: input,
-                                type: 'hidden'
+                                type: 'hidden',
+                                table: field.table?field.table:row.table
                             }
                             input.setAttribute("type", "hidden");
                             //fielddiv.setAttribute("class", "hidden")
@@ -463,7 +381,8 @@ class FormJSON {
                         case "date":
                             thisclass.fields[field.key] = {
                                 element: input,
-                                type: 'date'
+                                type: 'date',
+                                table: field.table?field.table:row.table
                             }
                             input.setAttribute("type", "date");
                             input.setAttribute("class", "input")
@@ -472,7 +391,8 @@ class FormJSON {
                         case "numeric":
                             thisclass.fields[field.key] = {
                                 element: input,
-                                type: 'number'
+                                type: 'number',
+                                table: field.table?field.table:row.table
                             }
                             input.setAttribute("type", "number");
                             input.setAttribute("class", "input")
@@ -484,7 +404,8 @@ class FormJSON {
                             var displayinput = document.createElement("input")
                             thisclass.fields[field.key] = {
                                 element: displayinput,
-                                type: 'file'
+                                type: 'file',
+                                table: field.table?field.table:row.table
                             }
                             displayinput.setAttribute("type", "hidden");
                             displayinput.setAttribute("id", field.key);
@@ -534,7 +455,8 @@ class FormJSON {
                             input.setAttribute("type", "text");
                             thisclass.fields[field.key] = {
                                 element: input,
-                                type: 'text'
+                                type: 'text',
+                                table: field.table?field.table:row.table
                             }
                             break;
 
@@ -564,10 +486,13 @@ class FormJSON {
                         element: input,
                         key: row.key
                     })
-                    thisclass.fields[row.key] = {
-                        element: input,
-                        type: 'quill'
-                    }
+
+                    var fv={};
+                    fv.element=input;
+                    fv.type="quill";
+                    fv.table=row.table;
+                    thisclass.fields[row.key] = fv;
+                    
                     input.setAttribute("class", "editor")
                     rowdiv.appendChild(input);
                     sectiondiv.appendChild(rowdiv);
@@ -585,10 +510,7 @@ class FormJSON {
                         theme: 'snow',
                         placeholder: 'Escribe aquí ...'
                     });
-                    thisclass.fields[obj.key] = {
-                        type: 'quill',
-                        element: quill
-                    };
+                    thisclass.fields[obj.key].element = quill;
                     quill.setText('\n\n\n\n\n');
                 }
             } catch (ex) {
@@ -696,6 +618,11 @@ class FormJSON {
 
     setField(key, data) {
         var field = this.fields[key];
+        if(!field){
+            console.log("field not found: "+key);
+            return;
+        }
+
         var element = field.element;
         var result = "";
         switch (field.type) {
@@ -734,6 +661,22 @@ class FormJSON {
             break;
         }
         return result;
+    }
+
+    getDataByTable(){
+            var data = {};
+            for (var key in this.fields) {
+                var item = this.fields[key];
+                if(!data[item.table])
+                data[item.table]={};
+
+                var dat=this.getField(key);
+                if(Array.isArray(dat))
+                data[item.table]=dat;
+                else
+                data[item.table][key]=dat;
+            }
+            return data;
     }
 
     print() {
@@ -786,6 +729,7 @@ function autocomplete(inp, arr) {
         populate(arr);
 
         const fieldA = e.target.fieldSetts;
+        var input = e.target;
         if (fieldA.dataurl && fieldA.datadisplay && fieldA.datareturn && fieldA.datalength) {
 
             if (e.target.value.length >= fieldA.datalength) {
