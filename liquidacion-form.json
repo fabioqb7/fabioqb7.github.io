@@ -1,0 +1,432 @@
+{
+	"label": "",
+	"type": "jsonform",
+	"formType": "remision",
+	"class": "document",
+	"elements": [
+    {
+			"type": "section",
+			"hidden": false,
+			"frame": {
+				"label": "LIQUIDACION",
+				"labelColor": "#ffffff",
+				"headerHeight": "16px",
+				"headerFillColor": "#43a047",
+				"lineColor": "#43a047",
+				"lineThick": "1px"
+			},
+			"rows": [
+        {
+					"type": "row",
+					"table": "movCompra",
+					"height": "25px",
+					"fields": [
+						{
+							"key": "documentId",
+							"label": "documentId",
+							"type": "hidden",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false
+						},
+            {
+							"key": "documento",
+							"label": "Documento",
+							"type": "list",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false,
+							"list": [{
+								"label": "Liquidación",
+								"value": "Liquidacion"
+							}],
+							"defaultValue": "Liquidacion"
+						},
+						{
+							"key": "fecha",
+							"label": "Fecha",
+							"type": "date",
+							"dataType": "date",
+							"width": "200px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							
+							"dateoptions": {
+								"defaultDate": "today"
+							}
+						},
+						{
+							"key": "estatus",
+							"label": "Estatus",
+							"type": "text",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": false,
+							"hidden": false,
+							"disabled": true,
+							"defaultValue": "BORRADOR"
+						},
+						{
+							"key": "folio",
+							"label": "Folio",
+							"type": "text",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": false,
+							"hidden": false,
+							"disabled": true
+						}
+					]
+				},
+				{
+					"type": "row",
+					"table": "movCompra",
+					"height": "25px",
+					"fields": [
+            {
+							"key": "proveedor",
+							"label": "Agricultor",
+							"type": "autocomplete",
+							"dataType": "string",
+							"dataurl": "https://mutn3v9t25.execute-api.us-east-1.amazonaws.com/dev/controlpanel",
+							"datalength": 3,
+							"datadepth": "body.finalResult.data",
+							"datadisplay": "item.nombre",
+							"datareturn": "item.id",
+							"dataquery":
+							{
+									"bucket": "biforms-control-panel",
+									"file": "agricultores-autocomplete.json",
+									"masterFilter": "_QUERY"
+							},
+							"datamethod": "POST",
+							"strict": true,
+							"width": "412px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false
+						},
+						{
+							"key": "situacion",
+							"label": "Situación",
+							"type": "list",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false,
+							"list": [
+								{
+									"label": "Sin Revisar",
+									"value": "Sin Revisar"
+								},
+								{
+									"label": "Revisión",
+									"value": "Revisión"
+								},
+								{
+									"label": "Aprobación",
+									"value": "Aprobación"
+								}
+							],
+							"defaultValue": "Sin Revisar"
+						}
+					]
+				},
+				{
+					"type": "row",
+					"table": "movCompra",
+					"height": "25px",
+					"fields": [
+            {
+						"key": "observaciones",
+						"label": "Observaciones",
+						"type": "text",
+						"dataType": "string",
+						"width": "840px",
+						"height": "25px",
+						"required": true,
+						"hidden": false,
+						"disabled": false
+					}]
+				},
+				{
+					"type": "row",
+					"table": "movCompra",
+					"height": "25px",
+					"fields": [
+            {
+						"key": "uno",
+						"label": "Uno",
+						"type": "numeric",
+						"dataType": "numeric",
+						"width": "50px",
+						"height": "25px",
+						"required": true,
+						"hidden": false,
+						"disabled": false,
+						"fire":"res"
+					},
+					{
+						"key": "dos",
+						"label": "DOs",
+						"type": "numeric",
+						"dataType": "numeric",
+						"width": "50px",
+						"height": "25px",
+						"required": true,
+						"hidden": false,
+						"disabled": false,
+						"fire":"res"
+					},
+					{
+						"key": "res",
+						"label": "Result",
+						"type": "numeric",
+						"dataType": "numeric",
+						"width": "50px",
+						"height": "25px",
+						"required": true,
+						"hidden": false,
+						"disabled": false,
+						"expression":"form('uno')*form('dos')"
+					}]
+				}
+			]
+		},
+		{
+			"type": "section",
+			"hidden": false,
+			"frame": {
+				"label": "Producto",
+				"labelColor": "#ffffff",
+				"headerHeight": "6px",
+				"headerFillColor": "#43a047",
+				"lineColor": "#43a047",
+				"lineThick": "1px"
+			},
+			"rows": [{
+					"type": "table",
+					"table": "movCompraD",
+					"fields": [
+					{
+							"data": "Test",
+							"title": "test",
+							"type": "numeric",
+							"numericFormat": {
+        							"pattern": "0,0.00"
+      						},
+      						"allowInvalid": false,
+              				"allowEmpty":false
+						},
+
+				
+						{
+							"data": "hora",
+							"title": "Hora",
+							"type": "time",
+							"width": "80px",
+							"required": true,
+							"timeFormat": "h:mm:ss a",
+        					"correctFormat": true
+						},
+						{
+							"data": "cantidad2",
+							"title": "Kg Recib",
+							"type": "numeric",
+							"width": "80px",
+							"required": true,
+							"sumary": "sum",
+							"sumform": ["totalCantidad2"],
+							"fire": "cantidad5,importe"
+						},
+						{
+							"data": "cantidad",
+							"title": "Arp-Cjs",
+							"type": "numeric",
+							"width": "80px",
+							"required": true,
+							"sumary": "sum",
+							"sumform": ["totalCantidad"],
+							"fire": "cantidad5,importe"
+						},
+						{
+							"data": "unidad",
+							"title": "Empaque",
+							"type": "autocomplete",
+							"width": "80px",
+							"required": true,
+              "dataurl": "https://s3.amazonaws.com/formjson/articulos-unidad.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+            {
+							"data": "articulo",
+							"title": "Tamaño",
+							"type": "autocomplete",
+							"width": "80px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/articulos-tamano.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "variedad",
+							"title": "Variedad",
+							"type": "autocomplete",
+							"width": "100px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/articulos-variedad.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+            {
+							"data": "calificacion",
+							"title": "Calif",
+							"type": "autocomplete",
+							"width": "60px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/articulos-calificacion.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "cantidad3",
+							"title": "KG Tierra",
+							"type": "numeric",
+							"width": "100px",
+							"required": true,
+							"fire": "cantidad5,importe"
+						},
+						{
+							"data": "cantidad4",
+							"title": "KG Desc/Bulto",
+							"type": "numeric",
+							"width": "100px",
+							"required": true,
+							"fire": "cantidad5,importe"
+						},
+						{
+							"data": "cantidad5",
+							"title": "KG Netos",
+							"type": "numeric",
+							"width": "100px",
+							"required": true,
+							"editor": false,
+							"expression": "col('cantidad2')-((col('cantidad3')+col('cantidad4'))*col('cantidad'))",
+							"fire": "importe"
+						},
+						{
+							"data": "precio",
+							"title": "Precio Liquidar",
+							"type": "numeric",
+							"width": "100px",
+							"fire": "importe"
+						},
+						{
+							"data": "importe",
+							"title": "Importe",
+							"type": "numeric",
+							"numericFormat": {
+        							"pattern": "$0,0.00",
+        							"culture": "en-US"
+      						},
+							"width": "100px",
+							"sumary": "sum",
+							"sumform": ["subTotal"],
+							"editor": false,
+							"expression": "col('cantidad5')*col('precio')"
+						},
+						{
+							"data": "notaD",
+							"title": "Video",
+							"type": "text",
+							"width": "200px"
+						},
+						{
+							"data": "notaD2",
+							"title": "Imagen",
+							"type": "text",
+							"width": "200px"
+						}
+					]
+				},
+				{
+					"type": "row",
+					"table": "movCompra",
+					"fields": [{
+							"key": "blank1",
+							"width": "150px",
+							"type": "hidden",
+							"hidden": true
+						},
+						{
+							"key": "totalCantidad2",
+							"label": "Kg Recib",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						},
+						{
+							"key": "totalCantidad",
+							"label": "Arp-Cjs",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						},
+						{
+							"key": "subTotal",
+							"label": "SubTotal",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						}
+					]
+				},
+				{
+					"key": "notas",
+					"label": "Notas",
+					"type": "textarea",
+					"table": "movCompra",
+					"height": "500px"
+				},
+				{
+					"type": "row",
+					"table": "movCompra",
+					"fields": [{
+						"key": "files",
+						"label": "Anexos",
+						"type": "file",
+						"s3BucketName": "formjson",
+						"s3BucketRegion": "us-east-1",
+						"s3IdentityPoolId": "us-east-1:13b6adc6-fff1-4033-bcad-dfd5f0fea671"
+
+					}]
+				}
+			]
+		}
+	]
+}

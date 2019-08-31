@@ -6,6 +6,9 @@ class FormJSON {
 
         this.fields = {};
         this.quills = [];
+        this.enable = true;
+        this.alerts = true;
+        this.requiredMsg = [];
 
         this.afterdraw = cbdraw;
 
@@ -14,9 +17,9 @@ class FormJSON {
         else
             thisclass.container = document.getElementById("formJSON");
 
-        this.jsfiles = ["https://cdn.jsdelivr.net/npm/flatpickr", "https://cdn.quilljs.com/1.3.6/quill.js", "https://docs.handsontable.com/pro/5.0.0/components/handsontable-pro/dist/handsontable.full.min.js", "https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"];
+        this.jsfiles = ["https://cdn.jsdelivr.net/npm/flatpickr", "https://cdn.quilljs.com/1.3.6/quill.js", "https://cdn.jsdelivr.net/npm/handsontable@6.2.2/dist/handsontable.full.min.js", "https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"];
 
-        this.cssfiles = ["https://fabioqb7.github.io/jsonForm.css", "https://docs.handsontable.com/pro/5.0.0/components/handsontable-pro/dist/handsontable.full.min.css", "https://cdn.quilljs.com/1.3.6/quill.snow.css", "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"];
+        this.cssfiles = ["https://fabioqb7.github.io/jsonForm.css", "https://cdn.jsdelivr.net/npm/handsontable-pro@6.2.2/dist/handsontable.full.min.css", "https://cdn.quilljs.com/1.3.6/quill.snow.css", "https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"];
 
         for (var i = 0; i < this.cssfiles.length; i++) {
             var link = document.createElement('link');
@@ -66,11 +69,15 @@ class FormJSON {
         var textnode = document.createTextNode(this.schema.label);
         title.appendChild(textnode)
         this.container.appendChild(title)
+        this.form = document.createElement("form");
+        this.form.setAttribute("onsubmit", "return false;");
+        this.container.appendChild(this.form);
+        this.container.style.position = 'absolute';
+
         var setFormVal = function(key, val) {
             document.getElementById(key).value = val;
         }
 
-        //this.schema.elements.forEach(function (section) {
         for (var k = 0; k < this.schema.elements.length; k++) {
             var section = this.schema.elements[k];
 
@@ -113,12 +120,14 @@ class FormJSON {
                     tablediv.setAttribute("id", "hot");
                     rowdiv.appendChild(tablediv);
                     var dict = {};
+                    var required = [];
 
                     row.fields.forEach(function(field, index) {
-
-                        //for (var index = 0; index < row.fields.length; index++) {
-                        //    var field = row.fields[index];
                         dict[field.data] = field;
+
+                        if (field.required)
+                            required.push(field);
+
                         if (field.type == "autocomplete") {
                             if (field.dataurl && field.datadisplay && field.datareturn && field.datalength) {
                                 field.source = function(search, process) {
@@ -203,7 +212,7 @@ class FormJSON {
                                     for (var i = 0; i < metaData.data.length; i++) {
                                         if (change[0][3] == metaData.data[i][metaData.pivot]) {
                                             for (var key in metaData.data[i]) {
-                                                hotable.setDataAtRowProp(change[0][0], key, metaData.data[i][key], "auto");
+                                                hotable.setDataAtRowProp(change[0][0], change[0][1] + '_' + key, metaData.data[i][key], "auto");
                                             }
                                             break;
                                         }
@@ -249,16 +258,15 @@ class FormJSON {
                         }
                     };
 
-                    //if (colsum.length > 0)
-                    //    hotSettings.columnSummary = colsum
-
                     sectiondiv.appendChild(rowdiv);
                     var hot = new Handsontable(hotElement,hotSettings);
-                    hot.dict=dict;
-                    thisclass.fields[row.key?row.key:row.table] = {
+                    hot.dict = dict;
+                    hot.required = required;
+                    thisclass.fields[row.key ? row.key : row.table] = {
                         element: hot,
                         type: 'table',
-                        table: row.table
+                        table: row.table,
+                        field: field
                     }
                     break;
                 case "row":
@@ -267,14 +275,14 @@ class FormJSON {
                         var field = row.fields[inf];
                         var fielddiv = document.createElement("div");
                         fielddiv.setAttribute("class", "fielddiv");
-                        //fielddiv.style.setProperty("display","inline","")
 
                         var label = document.createElement("label");
-                        //label.style.setProperty("display","block")
                         label.setAttribute("class", "label")
 
                         var textlabel = document.createTextNode(field.label ? field.label : "");
                         label.appendChild(textlabel);
+
+                        var input = document.createElement("input");
 
                         if (field.required) {
                             var abbr = document.createElement("abbr");
@@ -283,9 +291,8 @@ class FormJSON {
                             abbr.setAttribute("title", "Requerido");
                             abbr.setAttribute("class", "required");
                             label.appendChild(abbr);
+                            input.required = true;
                         }
-
-                        var input = document.createElement("input");
 
                         input.onchange = function() {
                             thisclass.data[field.key] = input.value;
@@ -298,7 +305,8 @@ class FormJSON {
                             thisclass.fields[field.key] = {
                                 element: input,
                                 type: 'list',
-                                table: field.table?field.table:row.table
+                                table: field.table ? field.table : row.table,
+                                field: field
                             }
                             input.setAttribute("class", "input")
                             field.list.forEach(function(option) {
@@ -318,18 +326,15 @@ class FormJSON {
                             input.style.setProperty('-webkit-appearance', 'menulist', '');
                             thisclass.data[field.key] = input.options[input.selectedIndex].value;
                             input.onchange = function() {
-                                thisclass.data[field.key] = input.options[input.selectedIndex].value;
+                                thisclass.data[field.key] = this.options[this.selectedIndex].value;
                             }
                             break;
                         case "autocomplete":
 
-                            input = document.createElement("form");
+                            input = document.createElement("div");
                             input.setAttribute("class", "input");
                             input.setAttribute("class", "autocomplete");
                             input.setAttribute("autocomplete", "off");
-
-
-                           
 
                             var inputbox = document.createElement("input");
                             inputbox.setAttribute("id", field.key);
@@ -337,15 +342,18 @@ class FormJSON {
                             inputbox.setAttribute("autocomplete", "off");
                             inputbox.fieldSetts = field;
 
+                            inputbox.required = field.required;
+
                             inputbox.style.setProperty('width', field.width, '');
 
                             thisclass.fields[field.key] = {
                                 element: inputbox,
                                 type: 'autocomplete',
-                                table: field.table?field.table:row.table
+                                table: field.table ? field.table : row.table,
+                                field: field
                             }
 
-                            autocomplete(inputbox, field.data);
+                            thisclass.autocomplete(inputbox, field.data, thisclass.fields[field.key]);
                             input.appendChild(inputbox);
                             break;
                         case "radio":
@@ -353,7 +361,8 @@ class FormJSON {
                             thisclass.fields[field.key] = {
                                 element: input,
                                 type: 'radio',
-                                table: field.table?field.table:row.table
+                                table: field.table ? field.table : row.table,
+                                field: field
                             }
                             input.setAttribute("style", "display: inline;")
                             input.setAttribute("class", "input")
@@ -371,7 +380,8 @@ class FormJSON {
                             thisclass.fields[field.key] = {
                                 element: input,
                                 type: 'hidden',
-                                table: field.table?field.table:row.table
+                                table: field.table ? field.table : row.table,
+                                field: field
                             }
                             input.setAttribute("type", "hidden");
                             //fielddiv.setAttribute("class", "hidden")
@@ -382,7 +392,8 @@ class FormJSON {
                             thisclass.fields[field.key] = {
                                 element: input,
                                 type: 'date',
-                                table: field.table?field.table:row.table
+                                table: field.table ? field.table : row.table,
+                                field: field
                             }
                             input.setAttribute("type", "date");
                             input.setAttribute("class", "input")
@@ -392,10 +403,30 @@ class FormJSON {
                             thisclass.fields[field.key] = {
                                 element: input,
                                 type: 'number',
-                                table: field.table?field.table:row.table
+                                table: field.table ? field.table : row.table,
+                                field: field
                             }
                             input.setAttribute("type", "number");
+                            input.setAttribute("step", "any");
                             input.setAttribute("class", "input")
+                            input.field = field;
+
+
+                            input.onchange = function(e) {
+                                    var target = e.target;
+                                    var form = function(field){
+                                            return Number(thisclass.getField(field));
+                                    }
+                                    if(target.field.fire){
+                                        var fieldDest=thisclass.fields[target.field.fire];
+                                        if(fieldDest.field.expression){
+                                                fieldDest.element.value = eval (fieldDest.field.expression);
+                                        }
+                                    }
+                                    
+                            };
+
+
                             break;
                         case "file":
                             input.setAttribute("type", "file");
@@ -404,8 +435,10 @@ class FormJSON {
                             var displayinput = document.createElement("input")
                             thisclass.fields[field.key] = {
                                 element: displayinput,
+                                input: input,
                                 type: 'file',
-                                table: field.table?field.table:row.table
+                                table: field.table ? field.table : row.table,
+                                field: field
                             }
                             displayinput.setAttribute("type", "hidden");
                             displayinput.setAttribute("id", field.key);
@@ -456,7 +489,8 @@ class FormJSON {
                             thisclass.fields[field.key] = {
                                 element: input,
                                 type: 'text',
-                                table: field.table?field.table:row.table
+                                table: field.table ? field.table : row.table,
+                                field: field
                             }
                             break;
 
@@ -487,21 +521,22 @@ class FormJSON {
                         key: row.key
                     })
 
-                    var fv={};
-                    fv.element=input;
-                    fv.type="quill";
-                    fv.table=row.table;
+                    var fv = {};
+                    fv.element = input;
+                    fv.type = "quill";
+                    fv.table = row.table;
+                    fv.field = row;
                     thisclass.fields[row.key] = fv;
-                    
+
                     input.setAttribute("class", "editor")
                     rowdiv.appendChild(input);
                     sectiondiv.appendChild(rowdiv);
                     break;
                 }
 
-                //});
             }
-            thisclass.container.appendChild(sectiondiv)
+
+            thisclass.form.appendChild(sectiondiv);
 
             try {
                 for (var i = 0; i < thisclass.quills.length; i++) {
@@ -517,9 +552,7 @@ class FormJSON {
                 console.log(ex)
             }
 
-            //}); forech
         }
-        //for
 
         if (thisclass.afterdraw)
             thisclass.afterdraw();
@@ -549,15 +582,64 @@ class FormJSON {
         var field = this.fields[key];
         var element = field.element;
         var result = "";
+        var self = this;
         switch (field.type) {
         case "table":
-            result = element.getData();
+            var res = [];
+            result = element.getSourceData();
+            var rowcount = 0;
+            for (var i = 0; i < result.length; i++) {
+                var item = null;
+                var row = result[i];
+                for (var key in row) {
+                    var prop = row[key];
+                    if (prop) {
+                        if (!item)
+                            item = {
+                                row: i
+                            };
+                        item[key] = prop;
+                    }
+
+                    /*
+                    if (!prop || prop == '') {
+                        if (element.dict[key])
+                            if (element.dict[key].required) {
+                                self.validity = self.validity && false;
+                                console.log("required col: ", key);
+                            }
+                    }*/
+
+                }
+                if (item) {
+                    item.row = rowcount;
+                    rowcount++;
+                    res.push(item);
+
+                    for (var j = 0; j < element.required.length; j++) {
+                        var prop = element.required[j];
+
+                        if (!item.hasOwnProperty(prop.data)) {
+                            self.validity = self.validity && false;
+                            this.requiredMsg.push(" La columna " + prop.title + " no puede ser vacía en la fila: " + (i + 1));
+                            console.log("required col: ", prop);
+                        }
+                    }
+
+                }
+
+            }
+            result = res;
             break;
         case "list":
             result = element.options[element.selectedIndex].value;
             break;
         case "autocomplete":
-            result = element.value;
+            if (field.field.datareturn && field.value) {
+                var item = field.value;
+                result = eval(field.field.datareturn);
+            } else
+                result = element.value;
             break;
         case "radio":
             var radios = document.getElementsByName(key);
@@ -590,6 +672,11 @@ class FormJSON {
     }
 
     getData(field) {
+
+        this.validity = true;
+        this.form.requestSubmit();
+        this.requiredMsg = [];
+
         if (field)
             return this.getField(field)
         else {
@@ -597,8 +684,24 @@ class FormJSON {
 
             for (var key in this.fields) {
                 var item = this.fields[key];
-                data[key] = this.getField(key);
+                var value = this.getField(key);
+                data[key] = value;
+
+                if (!value)
+                    if (item.field.required) {
+                        this.validity = this.validity && false;
+                        this.requiredMsg.push("El campo " + item.field.label + " es obligatorio.");
+                        console.log("required:", item.field.key);
+                    }
             }
+
+            if (!this.validity) {
+                console.log("validity", this.validity);
+                if (this.alerts) {
+                    alert(this.requiredMsg.join("\n"));
+                }
+            }
+
             return data;
 
         }
@@ -618,8 +721,8 @@ class FormJSON {
 
     setField(key, data) {
         var field = this.fields[key];
-        if(!field){
-            console.log("field not found: "+key);
+        if (!field) {
+            console.log("field not found: " + key);
             return;
         }
 
@@ -630,9 +733,17 @@ class FormJSON {
             result = element.loadData(data)
             break;
         case "list":
-            result = element.options[element.selectedIndex].value = data;
+            element.value = data;
+            result = data;
             break;
         case "autocomplete":
+            var item = JSON.parse(data);
+            if (typeof item == 'object') {
+                field.value = item;
+                if (field.field.datadisplay) {
+                    data = eval(field.field.datadisplay)
+                }
+            }
             result = element.value = data;
             break;
         case "radio":
@@ -663,20 +774,82 @@ class FormJSON {
         return result;
     }
 
-    getDataByTable(){
-            var data = {};
+    getDataByTable() {
+
+        this.getData();
+
+        var data = {};
+        for (var key in this.fields) {
+            var item = this.fields[key];
+            if (!data[item.table])
+                data[item.table] = {};
+
+            var dat = this.getField(key);
+            if (Array.isArray(dat))
+                data[item.table] = dat;
+            else
+                data[item.table][key] = dat;
+        }
+        return data;
+    }
+
+    setEnable(bol) {
+
+        if (bol) {
             for (var key in this.fields) {
                 var item = this.fields[key];
-                if(!data[item.table])
-                data[item.table]={};
 
-                var dat=this.getField(key);
-                if(Array.isArray(dat))
-                data[item.table]=dat;
-                else
-                data[item.table][key]=dat;
+                if (item.field.disabled)
+                    continue;
+
+                switch (item.type) {
+                case "table":
+                    item.element.updateSettings({
+                        readOnly: false
+                    });
+                    break;
+                case "quill":
+                    item.element.enable(true);
+                    break;
+                case "file":
+                    item.input.disabled = false;
+                    break;
+                default:
+                    item.element.disabled = false;
+                    break;
+                }
             }
-            return data;
+            this.enable = true;
+
+        } else {
+            for (var key in this.fields) {
+                var item = this.fields[key];
+
+                if (item.field.disabled)
+                    continue;
+
+                switch (item.type) {
+                case "table":
+                    item.element.updateSettings({
+                        readOnly: true
+                    });
+                    break;
+                case "quill":
+                    item.element.enable(false);
+                    break;
+                case "file":
+                    item.input.disabled = true;
+                    break;
+                default:
+                    item.element.disabled = true;
+                    break;
+                }
+
+            }
+            this.enable = false;
+
+        }
+
     }
 
     print() {
@@ -701,174 +874,172 @@ class FormJSON {
         return true;
     }
 
-}
-
-function autocomplete(inp, arr) {
-    /*the autocomplete function takes two arguments,
+    autocomplete(inp, arr, fieldd) {
+        var thisclass = this;
+        /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
-    var currentFocus;
-    /*execute a function when someone writes in the text field:*/
-    inp.addEventListener("input", function(e) {
-        var a, b, i, val = this.value;
-        /*close any already open lists of autocompleted values*/
-        closeAllLists();
-        if (!val) {
-            return false;
-        }
-        currentFocus = -1;
-        /*create a DIV element that will contain the items (values):*/
-        a = document.createElement("DIV");
-        a.setAttribute("id", this.id + "autocomplete-list");
-        a.setAttribute("class", "autocomplete-items");
-        /*append the DIV element as a child of the autocomplete container:*/
-        this.parentNode.appendChild(a);
-        /*for each item in the array...*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function(e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) {
+                return false;
+            }
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
 
+            if (arr)
+                populate(arr);
 
-        if(arr)
-        populate(arr);
+            const fieldA = e.target.fieldSetts;
+            var input = e.target;
+            if (fieldA.dataurl && fieldA.datadisplay && fieldA.datareturn && fieldA.datalength) {
 
-        const fieldA = e.target.fieldSetts;
-        var input = e.target;
-        if (fieldA.dataurl && fieldA.datadisplay && fieldA.datareturn && fieldA.datalength) {
+                if (e.target.value.length >= fieldA.datalength) {
+                    var request = new XMLHttpRequest();
+                    fieldA.requestInput = request;
+                    request.onreadystatechange = function(response) {
+                        if (request.readyState === 4) {
+                            if (request.status === 200) {
+                                var jsonOptions = JSON.parse(request.responseText);
+                                if (fieldA.datadepth) {
+                                    jsonOptions = eval("jsonOptions." + fieldA.datadepth);
+                                }
 
-            if (e.target.value.length >= fieldA.datalength) {
-                var request = new XMLHttpRequest();
-                fieldA.requestInput = request;
-                request.onreadystatechange = function(response) {
-                    if (request.readyState === 4) {
-                        if (request.status === 200) {
-                            var jsonOptions = JSON.parse(request.responseText);
-                            if (fieldA.datadepth) {
-                                jsonOptions = eval("jsonOptions." + fieldA.datadepth);
+                                populate(jsonOptions.map(function(item) {
+                                    return eval(fieldA.datadisplay)
+                                }), jsonOptions);
+
+                            } else {
+                                input.placeholder = "Couldn't load datalist options";
                             }
 
-                            populate(jsonOptions.map(function(item){ return eval(fieldA.datadisplay)}));
-
-                           
-                        } else{
-                            input.placeholder = "Couldn't load datalist options";
                         }
-                            
-
                     }
-                }
 
-                if (fieldA.dataquery) {
-                    var query = Object.create(fieldA.dataquery);
+                    if (fieldA.dataquery) {
+                        var query = Object.create(fieldA.dataquery);
 
-                    for (var key in query)
-                        if (query[key] == "_QUERY")
-                            query[key] = input.value;
-                        else
-                            query[key] = query[key]
-                }
+                        for (var key in query)
+                            if (query[key] == "_QUERY")
+                                query[key] = input.value;
+                            else
+                                query[key] = query[key]
+                    }
 
-                if (fieldA.datamethod == "POST") {
-                    request.open(fieldA.datamethod, fieldA.dataurl, true);
-                    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-                    request.send(JSON.stringify(query));
-                } else {
-                    var str = "?";
-                    for (var key in query) {
-                        if (str != "") {
-                            str += "&";
+                    if (fieldA.datamethod == "POST") {
+                        request.open(fieldA.datamethod, fieldA.dataurl, true);
+                        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        request.send(JSON.stringify(query));
+                    } else {
+                        var str = "?";
+                        for (var key in query) {
+                            if (str != "") {
+                                str += "&";
+                            }
+                            str += key + "=" + encodeURIComponent(query[key]);
                         }
-                        str += key + "=" + encodeURIComponent(query[key]);
+                        request.open(fieldA.datamethod, fieldA.dataurl + str, true);
+                        request.send();
                     }
-                    request.open(fieldA.datamethod, fieldA.dataurl + str, true);
-                    request.send();
-                }
 
+                }
             }
-        }
 
-
-        function populate(arr){
-            console.log(arr);
-            for (i = 0; i < arr.length; i++) {
-            /*check if the item starts with the same letters as the text field value:*/
-            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
-                /*create a DIV element for each matching element:*/
-                b = document.createElement("DIV");
-                /*make the matching letters bold:*/
-                b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
-                b.innerHTML += arr[i].substr(val.length);
-                /*insert a input field that will hold the current array item's value:*/
-                b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
-                /*execute a function when someone clicks on the item value (DIV element):*/
-                b.addEventListener("click", function(e) {
-                    /*insert the value for the autocomplete text field:*/
-                    inp.value = this.getElementsByTagName("input")[0].value;
-                    /*close the list of autocompleted values,
+            function populate(arr, objs) {
+                for (i = 0; i < arr.length; i++) {
+                    /*check if the item starts with the same letters as the text field value:*/
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        /*create a DIV element for each matching element:*/
+                        b = document.createElement("DIV");
+                        /*make the matching letters bold:*/
+                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML += arr[i].substr(val.length);
+                        /*insert a input field that will hold the current array item's value:*/
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "' index='" + i + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        b.addEventListener("click", function(e) {
+                            /*insert the value for the autocomplete text field:*/
+                            fieldd.value = objs[this.getElementsByTagName("input")[0].getAttribute("index")];
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            /*close the list of autocompleted values,
               (or any other open lists of autocompleted values:*/
-                    closeAllLists();
-                });
-                a.appendChild(b);
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }
             }
-        }
-        }
-        
-    });
-    /*execute a function presses a key on the keyboard:*/
-    inp.addEventListener("keydown", function(e) {
-        var x = document.getElementById(this.id + "autocomplete-list");
-        if (x)
-            x = x.getElementsByTagName("div");
-        if (e.keyCode == 40) {
-            /*If the arrow DOWN key is pressed,
+
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function(e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x)
+                x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
         increase the currentFocus variable:*/
-            currentFocus++;
-            /*and and make the current item more visible:*/
-            addActive(x);
-        } else if (e.keyCode == 38) {
-            //up
-            /*If the arrow UP key is pressed,
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) {
+                //up
+                /*If the arrow UP key is pressed,
         decrease the currentFocus variable:*/
-            currentFocus--;
-            /*and and make the current item more visible:*/
-            addActive(x);
-        } else if (e.keyCode == 13) {
-            /*If the ENTER key is pressed, prevent the form from being submitted,*/
-            e.preventDefault();
-            if (currentFocus > -1) {
-                /*and simulate a click on the "active" item:*/
-                if (x)
-                    x[currentFocus].click();
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x)
+                        x[currentFocus].click();
+                }
+            }
+        });
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x)
+                return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length)
+                currentFocus = 0;
+            if (currentFocus < 0)
+                currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
             }
         }
-    });
-    function addActive(x) {
-        /*a function to classify an item as "active":*/
-        if (!x)
-            return false;
-        /*start by removing the "active" class on all items:*/
-        removeActive(x);
-        if (currentFocus >= x.length)
-            currentFocus = 0;
-        if (currentFocus < 0)
-            currentFocus = (x.length - 1);
-        /*add class "autocomplete-active":*/
-        x[currentFocus].classList.add("autocomplete-active");
-    }
-    function removeActive(x) {
-        /*a function to remove the "active" class from all autocomplete items:*/
-        for (var i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete-active");
-        }
-    }
-    function closeAllLists(elmnt) {
-        /*close all autocomplete lists in the document,
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
     except the one passed as an argument:*/
-        var x = document.getElementsByClassName("autocomplete-items");
-        for (var i = 0; i < x.length; i++) {
-            if (elmnt != x[i] && elmnt != inp) {
-                x[i].parentNode.removeChild(x[i]);
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
             }
         }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function(e) {
+            closeAllLists(e.target);
+        });
     }
-    /*execute a function when someone clicks in the document:*/
-    document.addEventListener("click", function(e) {
-        closeAllLists(e.target);
-    });
 }

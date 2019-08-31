@@ -1,0 +1,867 @@
+<link rel="stylesheet" type="text/css" href="https://fabioqb7.github.io/jsonForm.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable-pro@6.2.2/dist/handsontable.full.min.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://cdn.quilljs.com/1.3.6/quill.snow.css" media="all">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" media="all">
+<script type="text/javascript" src="https://sdk.amazonaws.com/js/aws-sdk-2.283.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable@6.2.2/dist/handsontable.full.min.js"></script>
+<script type="text/javascript" src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<div></div>
+<section class="section">
+    <div bgcolor="#43a047" color="#ffffff" style="border: 1px solid #43a047; background-color:#43a047; color:#ffffff; padding:16px">LIQUIDACION</div>
+    <div class="rowjf">
+        <div class="fielddiv" style="width: 200px;">
+            <label class="label">
+                documentId<abbr title="Requerido" class="required">*</abbr>
+            </label>
+            <input type="hidden" value="" class="input" id="documentId" style="width: 200px; padding: inherit;">
+        </div>
+        <div class="fielddiv">
+            <label class="label">
+                Documento<abbr title="Requerido" class="required">*</abbr>
+            </label>
+            <select class="input" id="documento" style="-webkit-appearance: menulist; width: 200px; padding: inherit;">
+                <option value="Liquidacion" selected="selected">Liquidación</option>
+            </select>
+        </div>
+        <div class="fielddiv">
+            <label class="label">
+                Fecha<abbr title="Requerido" class="required">*</abbr>
+            </label>
+            <input type="text" class="input flatpickr-input" readonly="readonly" id="fecha" style="width: 200px; padding: inherit;">
+        </div>
+        <div class="fielddiv">
+            <label class="label">Estatus</label>
+            <input type="text" id="estatus" disabled="" style="width: 200px; padding: inherit;">
+        </div>
+        <div class="fielddiv">
+            <label class="label">Folio</label>
+            <input type="text" id="folio" disabled="" style="width: 200px; padding: inherit;">
+        </div>
+    </div>
+    <div class="rowjf">
+        <div class="fielddiv">
+            <label class="label">
+                Agricultor<abbr title="Requerido" class="required">*</abbr>
+            </label>
+            <form class="autocomplete" autocomplete="off" id="proveedor" style="width: 412px; padding: inherit;">
+                <input id="proveedor" palceholder="Agricultor" autocomplete="off" style="width: 412px;">
+            </form>
+        </div>
+        <div class="fielddiv">
+            <label class="label">
+                Situación<abbr title="Requerido" class="required">*</abbr>
+            </label>
+            <select class="input" id="situacion" style="-webkit-appearance: menulist; width: 200px; padding: inherit;">
+                <option value="Sin Revisar" selected="selected">Sin Revisar</option>
+                <option value="Revisión">Revisión</option>
+                <option value="Aprobación">Aprobación</option>
+            </select>
+        </div>
+    </div>
+    <div class="rowjf">
+        <div class="fielddiv">
+            <label class="label">Observaciones</label>
+            <input type="text" id="observaciones" style="width: 840px; padding: inherit;">
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div bgcolor="#43a047" color="#ffffff" style="border: 1px solid #43a047; background-color:#43a047; color:#ffffff; padding:6px">Producto</div>
+    <div>
+        <div id="hot" class="handsontable htRowHeaders htColumnHeaders">
+            <div class="ht_master handsontable" style="position: relative; overflow: visible;">
+                <div class="wtHolder" style="position: relative; overflow: visible;">
+                    <div class="wtHider" style="width: 1510px; height: 142px;">
+                        <div class="wtSpreader" style="position: relative; top: 0px; left: 0px;">
+                            <table class="htCore">
+                                <colgroup>
+                                    <col class="rowHeader" style="width: 50px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 60px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 200px;">
+                                    <col style="width: 200px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="" style="height: 25px;">
+                                            <div class="relative">
+                                                <span class="colHeader cornerHeader">&nbsp;</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Viaje</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Kg Recib</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Arp-Cjs</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Empaque</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Tamaño</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Variedad</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Calif</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">KG Tierra</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">KG Desc/Bulto</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">KG Netos</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Precio Liquidar</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Importe</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Video</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Imagen</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">1</span>
+                                            </div>
+                                        </th>
+                                        <td class="">12</td>
+                                        <td class="htRight htNumeric">12</td>
+                                        <td class="htRight htNumeric">12</td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                            Arpilla
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                            1A
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class="htRight htNumeric">12</td>
+                                        <td class=""></td>
+                                        <td class="htRight htNumeric">$0.00</td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">2</span>
+                                            </div>
+                                        </th>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">3</span>
+                                            </div>
+                                        </th>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">4</span>
+                                            </div>
+                                        </th>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                    </tr>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">5</span>
+                                            </div>
+                                        </th>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class="htAutocomplete">
+                                            <div class="htAutocompleteArrow">▼</div>
+                                        </td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                        <td class=""></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="htBorders">
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 100px; display: none; top: 26px; left: 449px;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 23px; width: 2px; display: none; top: 26px; left: 449px;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 100px; display: none; top: 48px; left: 449px;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 24px; width: 2px; display: none; top: 26px; left: 548px;"></div>
+                                    <div class="wtBorder current corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none; top: 45px; left: 545px;"></div>
+                                </div>
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill corner" style="background-color: rgb(255, 0, 0); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ht_clone_top handsontable" style="position: absolute; top: 0px; left: 0px; overflow: hidden; height: 30px; transform: translate3d(0px, 0px, 0px);">
+                <div class="wtHolder" style="position: relative; height: 60px;">
+                    <div class="wtHider" style="width: 1510px;">
+                        <div class="wtSpreader" style="position: relative; left: 0px;">
+                            <table class="htCore">
+                                <colgroup>
+                                    <col class="rowHeader" style="width: 50px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 80px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 60px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 100px;">
+                                    <col style="width: 200px;">
+                                    <col style="width: 200px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="" style="height: 25px;">
+                                            <div class="relative">
+                                                <span class="colHeader cornerHeader">&nbsp;</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Viaje</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Kg Recib</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Arp-Cjs</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Empaque</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Tamaño</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Variedad</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Calif</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">KG Tierra</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">KG Desc/Bulto</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">KG Netos</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Precio Liquidar</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Importe</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Video</span>
+                                            </div>
+                                        </th>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="colHeader columnSorting sortAction">Imagen</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div class="htBorders">
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill corner" style="background-color: rgb(255, 0, 0); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ht_clone_bottom handsontable" style="position: absolute; top: 0px; left: 0px; overflow: hidden; height: 0px;">
+                <div class="wtHolder" style="position: relative; height: 30px;">
+                    <div class="wtHider" style="width: 1510px;">
+                        <div class="wtSpreader" style="position: relative;">
+                            <table class="htCore">
+                                <colgroup></colgroup>
+                                <thead>
+                                    <tr></tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ht_clone_left handsontable" style="position: absolute; top: 0px; left: 0px; overflow: hidden; width: 54px; transform: translate3d(0px, 0px, 0px);">
+                <div class="wtHolder" style="position: relative; width: 84px;">
+                    <div class="wtHider" style="height: 142px;">
+                        <div class="wtSpreader" style="position: relative; top: 0px;">
+                            <table class="htCore">
+                                <colgroup>
+                                    <col class="rowHeader" style="width: 50px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="" style="height: 25px;">
+                                            <div class="relative">
+                                                <span class="colHeader cornerHeader">&nbsp;</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">1</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">2</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">3</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">4</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="">
+                                            <div class="relative">
+                                                <span class="rowHeader">5</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="htBorders">
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill corner" style="background-color: rgb(255, 0, 0); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ht_clone_top_left_corner handsontable" style="position: absolute; top: 0px; left: 0px; overflow: hidden; transform: translate3d(0px, 0px, 0px); height: 30px; width: 54px;">
+                <div class="wtHolder" style="position: relative;">
+                    <div class="wtHider">
+                        <div class="wtSpreader" style="position: relative;">
+                            <table class="htCore">
+                                <colgroup>
+                                    <col class="rowHeader" style="width: 50px;">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="" style="height: 25px;">
+                                            <div class="relative">
+                                                <span class="colHeader cornerHeader">&nbsp;</span>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div class="htBorders">
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 2px; display: none;"></div>
+                                    <div class="wtBorder current corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder fill corner" style="background-color: rgb(255, 0, 0); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                                <div style="position: absolute; top: 0px; left: 0px;">
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                    <div class="wtBorder area corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="handsontableInputHolder" style="top: -9999px; left: -9999px; z-index: -1; position: fixed;">
+                <textarea tabindex="-1" class="handsontableInput" style="width: 70px; height: 23px; font-size: 16px; font-family: Times; resize: none; min-width: 70px; max-width: 1957px; overflow-y: hidden;"></textarea>
+            </div>
+            <div class="handsontableInputHolder" style="top: -9999px; left: -9999px; z-index: -1; position: fixed;">
+                <textarea tabindex="-1" class="handsontableInput" style="width: 71px; height: 23px; font-size: 16px; font-family: Times; resize: none; min-width: 71px; max-width: 1797px; overflow-y: hidden;"></textarea>
+            </div>
+            <div class="handsontableInputHolder" style="top: -9999px; left: -9999px; z-index: -1; position: fixed;">
+                <textarea tabindex="-1" class="handsontableInput" style="width: 91px; height: 23px; font-size: 16px; font-family: Times; resize: none; min-width: 91px; max-width: 1557px; overflow-y: hidden;"></textarea>
+                <div class="handsontableEditor autocompleteEditor htMacScroll handsontable listbox" id="ht_5fec1cc206f158a9" style="width: 83px; height: 54px; overflow: hidden; display: none;" data-initialstyle="width: 83px; height: 54px; overflow: hidden;" data-originalstyle="width: 83px; height: 54px; overflow: hidden;">
+                    <div class="ht_master handsontable" style="position: relative; padding-right: 2px;">
+                        <div class="wtHolder" style="position: relative; width: 83px; height: 54px;">
+                            <div class="wtHider" style="width: 79px; height: 47px;">
+                                <div class="wtSpreader" style="position: relative; top: 0px; left: 0px;">
+                                    <table class="htCore">
+                                        <colgroup>
+                                            <col style="width: 79px;">
+                                        </colgroup>
+                                        <thead></thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="listbox htDimmed">
+                                                    <strong>1</strong>
+                                                    A
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="listbox htDimmed">
+                                                    <strong>1</strong>
+                                                    Y 2DAS
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="htBorders">
+                                        <div style="position: absolute; top: 0px; left: 0px;">
+                                            <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 78px; display: none; top: 0px; left: 0px;"></div>
+                                            <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 23px; width: 2px; display: none; top: 0px; left: 0px;"></div>
+                                            <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 2px; width: 78px; display: none; top: 22px; left: 0px;"></div>
+                                            <div class="wtBorder current" style="background-color: rgb(75, 137, 255); height: 24px; width: 2px; display: none; top: 0px; left: 77px;"></div>
+                                            <div class="wtBorder current corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                        </div>
+                                        <div style="position: absolute; top: 0px; left: 0px;">
+                                            <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                            <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                            <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                            <div class="wtBorder fill" style="background-color: rgb(255, 0, 0); height: 1px; width: 1px; display: none;"></div>
+                                            <div class="wtBorder fill corner" style="background-color: rgb(255, 0, 0); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                        </div>
+                                        <div style="position: absolute; top: 0px; left: 0px;">
+                                            <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                            <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                            <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                            <div class="wtBorder area" style="background-color: rgb(75, 137, 255); height: 1px; width: 1px; display: none;"></div>
+                                            <div class="wtBorder area corner" style="background-color: rgb(75, 137, 255); height: 6px; width: 6px; border: 1px solid rgb(255, 255, 255); display: none;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ht_clone_top handsontable" style="position: absolute; top: 0px; left: 0px; overflow: hidden;">
+                        <div class="wtHolder" style="position: relative;">
+                            <div class="wtHider">
+                                <div class="wtSpreader" style="position: relative;">
+                                    <table class="htCore">
+                                        <colgroup></colgroup>
+                                        <thead></thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ht_clone_bottom handsontable" style="position: absolute; top: 0px; left: 0px; overflow: hidden;">
+                        <div class="wtHolder" style="position: relative;">
+                            <div class="wtHider">
+                                <div class="wtSpreader" style="position: relative;">
+                                    <table class="htCore">
+                                        <colgroup></colgroup>
+                                        <thead></thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ht_clone_left handsontable" style="position: absolute; top: 0px; left: 0px; overflow: hidden;">
+                        <div class="wtHolder" style="position: relative;">
+                            <div class="wtHider">
+                                <div class="wtSpreader" style="position: relative;">
+                                    <table class="htCore">
+                                        <colgroup></colgroup>
+                                        <thead></thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="handsontableInputHolder" style="z-index: -1;">
+                        <textarea tabindex="-1" class="handsontableInput" style="width: 0px; height: 0px;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="manualColumnResizer" style="top: 268px; left: 917px; height: 26px;"></div>
+        </div>
+    </div>
+    <div class="rowjf">
+        <div class="fielddiv" style="width: 150px;">
+            <label class="label"></label>
+            <input type="hidden" value="" class="input" id="blank1" style="width: 150px; padding: inherit;">
+        </div>
+        <div class="fielddiv">
+            <label class="label">Kg Recib</label>
+            <input type="number" class="input" id="totalCantidad2" disabled="" style="width: 100px; padding: inherit;">
+        </div>
+        <div class="fielddiv">
+            <label class="label">Arp-Cjs</label>
+            <input type="number" class="input" id="totalCantidad" disabled="" style="width: 100px; padding: inherit;">
+        </div>
+        <div class="fielddiv">
+            <label class="label">SubTotal</label>
+            <input type="text" id="subTotal" disabled="" style="width: 100px; padding: inherit;">
+        </div>
+    </div>
+    <div>
+        <div class="ql-toolbar ql-snow">
+            <span class="ql-formats">
+                <span class="ql-header ql-picker">
+                    <span class="ql-picker-label" tabindex="0" role="button" aria-expanded="false" aria-controls="ql-picker-options-0">
+                        <svg viewBox="0 0 18 18">
+                            <polygon class="ql-stroke" points="7 11 9 13 11 11 7 11"></polygon>
+                            <polygon class="ql-stroke" points="7 7 9 5 11 7 7 7"></polygon>
+                        </svg>
+                    </span>
+                    <span class="ql-picker-options" aria-hidden="true" tabindex="-1" id="ql-picker-options-0">
+                        <span tabindex="0" role="button" class="ql-picker-item" data-value="1"></span>
+                        <span tabindex="0" role="button" class="ql-picker-item" data-value="2"></span>
+                        <span tabindex="0" role="button" class="ql-picker-item" data-value="3"></span>
+                        <span tabindex="0" role="button" class="ql-picker-item"></span>
+                    </span>
+                </span>
+                <select class="ql-header" style="display: none;">
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option selected="selected"></option>
+                </select>
+            </span>
+            <span class="ql-formats">
+                <button type="button" class="ql-bold">
+                    <svg viewBox="0 0 18 18">
+                        <path class="ql-stroke" d="M5,4H9.5A2.5,2.5,0,0,1,12,6.5v0A2.5,2.5,0,0,1,9.5,9H5A0,0,0,0,1,5,9V4A0,0,0,0,1,5,4Z"></path>
+                        <path class="ql-stroke" d="M5,9h5.5A2.5,2.5,0,0,1,13,11.5v0A2.5,2.5,0,0,1,10.5,14H5a0,0,0,0,1,0,0V9A0,0,0,0,1,5,9Z"></path>
+                    </svg>
+                </button>
+                <button type="button" class="ql-italic">
+                    <svg viewBox="0 0 18 18">
+                        <line class="ql-stroke" x1="7" x2="13" y1="4" y2="4"></line>
+                        <line class="ql-stroke" x1="5" x2="11" y1="14" y2="14"></line>
+                        <line class="ql-stroke" x1="8" x2="10" y1="14" y2="4"></line>
+                    </svg>
+                </button>
+                <button type="button" class="ql-underline">
+                    <svg viewBox="0 0 18 18">
+                        <path class="ql-stroke" d="M5,3V9a4.012,4.012,0,0,0,4,4H9a4.012,4.012,0,0,0,4-4V3"></path>
+                        <rect class="ql-fill" height="1" rx="0.5" ry="0.5" width="12" x="3" y="15"></rect>
+                    </svg>
+                </button>
+                <button type="button" class="ql-link">
+                    <svg viewBox="0 0 18 18">
+                        <line class="ql-stroke" x1="7" x2="11" y1="7" y2="11"></line>
+                        <path class="ql-even ql-stroke" d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z"></path>
+                        <path class="ql-even ql-stroke" d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z"></path>
+                    </svg>
+                </button>
+            </span>
+            <span class="ql-formats">
+                <button type="button" class="ql-list" value="ordered">
+                    <svg viewBox="0 0 18 18">
+                        <line class="ql-stroke" x1="7" x2="15" y1="4" y2="4"></line>
+                        <line class="ql-stroke" x1="7" x2="15" y1="9" y2="9"></line>
+                        <line class="ql-stroke" x1="7" x2="15" y1="14" y2="14"></line>
+                        <line class="ql-stroke ql-thin" x1="2.5" x2="4.5" y1="5.5" y2="5.5"></line>
+                        <path class="ql-fill" d="M3.5,6A0.5,0.5,0,0,1,3,5.5V3.085l-0.276.138A0.5,0.5,0,0,1,2.053,3c-0.124-.247-0.023-0.324.224-0.447l1-.5A0.5,0.5,0,0,1,4,2.5v3A0.5,0.5,0,0,1,3.5,6Z"></path>
+                        <path class="ql-stroke ql-thin" d="M4.5,10.5h-2c0-.234,1.85-1.076,1.85-2.234A0.959,0.959,0,0,0,2.5,8.156"></path>
+                        <path class="ql-stroke ql-thin" d="M2.5,14.846a0.959,0.959,0,0,0,1.85-.109A0.7,0.7,0,0,0,3.75,14a0.688,0.688,0,0,0,.6-0.736,0.959,0.959,0,0,0-1.85-.109"></path>
+                    </svg>
+                </button>
+                <button type="button" class="ql-list" value="bullet">
+                    <svg viewBox="0 0 18 18">
+                        <line class="ql-stroke" x1="6" x2="15" y1="4" y2="4"></line>
+                        <line class="ql-stroke" x1="6" x2="15" y1="9" y2="9"></line>
+                        <line class="ql-stroke" x1="6" x2="15" y1="14" y2="14"></line>
+                        <line class="ql-stroke" x1="3" x2="3" y1="4" y2="4"></line>
+                        <line class="ql-stroke" x1="3" x2="3" y1="9" y2="9"></line>
+                        <line class="ql-stroke" x1="3" x2="3" y1="14" y2="14"></line>
+                    </svg>
+                </button>
+            </span>
+            <span class="ql-formats">
+                <button type="button" class="ql-clean">
+                    <svg class="" viewBox="0 0 18 18">
+                        <line class="ql-stroke" x1="5" x2="13" y1="3" y2="3"></line>
+                        <line class="ql-stroke" x1="6" x2="9.35" y1="12" y2="3"></line>
+                        <line class="ql-stroke" x1="11" x2="15" y1="11" y2="15"></line>
+                        <line class="ql-stroke" x1="15" x2="11" y1="11" y2="15"></line>
+                        <rect class="ql-fill" height="1" rx="0.5" ry="0.5" width="7" x="2" y="14"></rect>
+                    </svg>
+                </button>
+            </span>
+        </div>
+        <div class="editor ql-container ql-snow">
+            <div class="ql-editor" data-gramm="false" contenteditable="true" data-placeholder="Escribe aquí ...">
+                <p>
+                    <br>
+                </p>
+                <p>
+                    <br>
+                </p>
+                <p>
+                    <br>
+                </p>
+                <p>asdasda</p>
+                <p>
+                    <br>
+                </p>
+            </div>
+            <div class="ql-clipboard" contenteditable="true" tabindex="-1"></div>
+            <div class="ql-tooltip ql-hidden">
+                <a class="ql-preview" target="_blank" href="about:blank"></a>
+                <input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL">
+                <a class="ql-action"></a>
+                <a class="ql-remove"></a>
+            </div>
+        </div>
+    </div>
+    <div class="rowjf">
+        <div class="fielddiv">
+            <label class="label">Anexos</label>
+            <input type="file" class="input" id="files" style="padding: inherit;">
+        </div>
+    </div>
+</section>
