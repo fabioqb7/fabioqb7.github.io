@@ -389,15 +389,18 @@ class FormJSON {
                             fielddiv.style.setProperty('width', field.width, '');
                             break;
                         case "date":
+                            
+                            input.setAttribute("type", "date");
+                            input.setAttribute("class", "input")
+                            var picker = flatpickr(input, field.dateoptions ? field.dateoptions : {});
                             thisclass.fields[field.key] = {
                                 element: input,
                                 type: 'date',
                                 table: field.table ? field.table : row.table,
-                                field: field
+                                field: field,
+                                picker: picker
+
                             }
-                            input.setAttribute("type", "date");
-                            input.setAttribute("class", "input")
-                            flatpickr(input, field.dateoptions ? field.dateoptions : {});
                             break;
                         case "numeric":
                             thisclass.fields[field.key] = {
@@ -759,7 +762,13 @@ class FormJSON {
             result = element.value = data;
             break;
         case "date":
-            result = element.value = data;
+
+        var format = 'Y-m-d';
+        if(field.field.dateoptions)
+        if(field.field.dateoptions.dateFormat)
+        format = field.field.dateoptions.dateFormat;
+        field.picker.setDate(data,function(){},format);
+    
             break;
         case "file":
             result = element.value = data;
