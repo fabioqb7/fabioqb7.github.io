@@ -56,10 +56,11 @@
 							"width": "200px",
 							"height": "25px",
 							"required": true,
-							"hidden": false,
-							
+							"hidden": false,				
 							"dateoptions": {
-								"defaultDate": "today"
+								"defaultDate": "today",
+								"dateFormat": "Y-m-d",
+								"allowInput": true
 							}
 						},
 						{
