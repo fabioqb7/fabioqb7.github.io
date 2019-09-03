@@ -420,7 +420,7 @@
 					"fields": [{
 						"key": "files",
 						"label": "Anexos",
-						"type": "file",
+						"type": "multifile",
 						"s3BucketName": "formjson",
 						"s3BucketRegion": "us-east-1",
 						"s3IdentityPoolId": "us-east-1:13b6adc6-fff1-4033-bcad-dfd5f0fea671"

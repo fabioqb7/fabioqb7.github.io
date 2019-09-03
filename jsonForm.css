@@ -58,6 +58,8 @@
   top: 100%;
   left: 0;
   right: 0;
+  height: 300px;
+  overflow: scroll;
 }
 .autocomplete-items div {
   padding: 10px;
@@ -73,4 +75,9 @@
   /*when navigating through the items using the arrow keys:*/
   background-color: DodgerBlue !important; 
   color: #ffffff; 
+}
+
+.fjclosebutton:hover {
+
+  background-color: gray;
 }

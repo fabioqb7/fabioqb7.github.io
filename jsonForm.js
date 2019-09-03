@@ -389,9 +389,10 @@ class FormJSON {
                             fielddiv.style.setProperty('width', field.width, '');
                             break;
                         case "date":
-                            
+
                             input.setAttribute("type", "date");
                             input.setAttribute("class", "input")
+                            input.setAttribute("autocomplete", "false")
                             var picker = flatpickr(input, field.dateoptions ? field.dateoptions : {});
                             thisclass.fields[field.key] = {
                                 element: input,
@@ -414,21 +415,20 @@ class FormJSON {
                             input.setAttribute("class", "input")
                             input.field = field;
 
-
                             input.onchange = function(e) {
-                                    var target = e.target;
-                                    var form = function(field){
-                                            return Number(thisclass.getField(field));
+                                var target = e.target;
+                                var form = function(field) {
+                                    return Number(thisclass.getField(field));
+                                }
+                                if (target.field.fire) {
+                                    var fieldDest = thisclass.fields[target.field.fire];
+                                    if (fieldDest.field.expression) {
+                                        fieldDest.element.value = eval(fieldDest.field.expression);
                                     }
-                                    if(target.field.fire){
-                                        var fieldDest=thisclass.fields[target.field.fire];
-                                        if(fieldDest.field.expression){
-                                                fieldDest.element.value = eval (fieldDest.field.expression);
-                                        }
-                                    }
-                                    
-                            };
+                                }
 
+                            }
+                            ;
 
                             break;
                         case "file":
@@ -485,6 +485,116 @@ class FormJSON {
                                     input.parentElement.appendChild(displayinput);
                                 });
                             }
+
+                            break;
+
+                        case "multifile":
+                            input.setAttribute("type", "file");
+                            input.setAttribute("class", "input")
+
+                            var displayinput = document.createElement("input");
+
+                            displayinput.setAttribute("type", "text");
+                            displayinput.setAttribute("id", field.key);
+
+                            var divMultiFile = document.createElement("div");
+                            var filelist = document.createElement("div");
+                            input.fjlist = filelist;
+
+                            divMultiFile.appendChild(input);
+                            divMultiFile.appendChild(filelist);
+
+
+                            input.addFile = function(url){
+                                    var fdiv = document.createElement("div");
+                                        var close = document.createElement("span");
+                                        close.setAttribute("class", "fjclosebutton")
+                                        close.innerHTML = " &times; "
+                                        close.onclick = function(e){
+                                                e=e.target;
+                                                e.parentElement.parentElement.removeChild(e.parentElement);
+                                        }
+
+                                        var open = document.createElement("a");
+                                        open.setAttribute("class", "fjclosebutton")
+                                        open.setAttribute("href", url);
+                                        open.setAttribute("target", "_blank");
+                                        open.innerHTML = " &raquo; "
+                                        
+
+                                        var newfile = document.createElement("input");
+                                        newfile.setAttribute("type", "text");
+                                        newfile.setAttribute("width", "100px");
+
+                                        fdiv.appendChild(close);
+                                        fdiv.appendChild(newfile);
+                                        fdiv.appendChild(open);
+
+                                        
+                                        newfile.value = url;
+                                        newfile.setAttribute("value", url);
+                                        this.fjlist.appendChild(fdiv);
+
+                            }
+
+
+                            input.onchange = function() {
+                                var self = this;
+                                AWS.config.update({
+                                    region: field.s3BucketRegion,
+                                    credentials: new AWS.CognitoIdentityCredentials({
+                                        IdentityPoolId: field.s3IdentityPoolId
+                                    })
+                                });
+
+                                var s3 = new AWS.S3({
+                                    apiVersion: '2006-03-01',
+                                    params: {
+                                        Bucket: field.s3BucketName
+                                    }
+                                });
+
+                                var files = self.files;
+                                if (!files.length) {
+                                    return alert('Please choose a file to upload first.');
+                                }
+
+                                for (var i = 0; i < files.length; i++) {
+                                    var file = files[i];
+                                    var fileName = file.name;
+                                    var albumPhotosKey = 'filesuploaded' + '/';
+
+                                    var photoKey = albumPhotosKey + fileName;
+                                    s3.upload({
+                                        Key: photoKey,
+                                        Body: file,
+                                        ACL: 'public-read'
+                                    }, function(err, data) {
+                                        displayinput.setAttribute("type", "text");
+                                        if (err) {
+                                            console.log(err);
+                                            displayinput.value = 'There was an error uploading your photo: ' + err;
+                                            return false;
+                                        }
+
+                                        self.addFile(data.Location);
+
+                                        
+                                    });
+                                }
+
+                            }
+
+                            thisclass.fields[field.key] = {
+                                element: input,
+                                input: input,
+                                type: 'multifile',
+                                table: field.table ? field.table : row.table,
+                                field: field,
+                                values: []
+                            }
+
+                            input = divMultiFile;
 
                             break;
                         default:
@@ -662,6 +772,15 @@ class FormJSON {
         case "file":
             result = element.value;
             break;
+        case "multifile":
+            var res = [];
+            for(var i=0;i<element.fjlist.children.length;i++){
+                    var item = element.fjlist.children[i];
+                    res.push(item.querySelector('input').value);
+            }
+            result = JSON.stringify(res);
+           
+            break;
         case "quill":
             result = element.getText();
             break;
@@ -763,15 +882,27 @@ class FormJSON {
             break;
         case "date":
 
-        var format = 'Y-m-d';
-        if(field.field.dateoptions)
-        if(field.field.dateoptions.dateFormat)
-        format = field.field.dateoptions.dateFormat;
-        field.picker.setDate(data,function(){},format);
-    
+            var format = 'Y-m-d';
+            if (field.field.dateoptions)
+                if (field.field.dateoptions.dateFormat)
+                    format = field.field.dateoptions.dateFormat;
+            field.picker.setDate(data, function() {}, format);
+
             break;
         case "file":
             result = element.value = data;
+            break;
+        case "multifile":
+
+        var val = "";
+
+                element.fjlist.innerHTML = '';
+                val = JSON.parse(data);
+                for (var i = 0; i<val.length; i++) {
+                       element.addFile(val[i]);
+                }
+       
+            result = val;
             break;
         case "quill":
             result = element.setText(data)
@@ -964,6 +1095,7 @@ class FormJSON {
             }
 
             function populate(arr, objs) {
+                    var contains = [];
                 for (i = 0; i < arr.length; i++) {
                     /*check if the item starts with the same letters as the text field value:*/
                     if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
@@ -984,7 +1116,22 @@ class FormJSON {
                             closeAllLists();
                         });
                         a.appendChild(b);
+                    }else if(arr[i].toUpperCase().includes(val.toUpperCase())){
+                        b = document.createElement("DIV");
+                        b.innerHTML = arr[i].toUpperCase().replace(val.toUpperCase(),"<strong>" + val.toUpperCase()+ "</strong>");
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "' index='" + i + "'>";
+                        b.addEventListener("click", function(e) {
+                            fieldd.value = objs[this.getElementsByTagName("input")[0].getAttribute("index")];
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            closeAllLists();
+                        });
+                        contains.push(b);
                     }
+                }
+
+
+                for(var j=0;j<contains.length;j++){
+                         a.appendChild(contains[j]);
                 }
             }
 
