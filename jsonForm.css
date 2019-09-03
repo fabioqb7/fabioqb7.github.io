@@ -74,3 +74,8 @@
   background-color: DodgerBlue !important; 
   color: #ffffff; 
 }
+
+fjclosebutton:hover {
+
+  background-color: gray;
+}
