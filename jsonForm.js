@@ -546,7 +546,7 @@ class FormJSON {
 
                                         var fdiv = document.createElement("div");
                                         var close = document.createElement("span");
-                                        close.input.setAttribute("class", "fjclosebutton")
+                                        close.setAttribute("class", "fjclosebutton")
                                         close.innerHTML = "&times; "
                                         close.onclick = function(e){
                                                 e=e.target;
