@@ -58,7 +58,7 @@
   top: 100%;
   left: 0;
   right: 0;
-  height: 300px;
+  max-height: 300px;
   overflow: scroll;
 }
 .autocomplete-items div {
