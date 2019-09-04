@@ -75,7 +75,7 @@ class FormJSON {
         this.container.style.position = 'absolute';
 
         var setFormVal = function(key, val) {
-            document.getElementById(key).value = val;
+            thisclass.setField(key, val);
         }
 
         for (var k = 0; k < this.schema.elements.length; k++) {
@@ -406,7 +406,7 @@ class FormJSON {
                         case "numeric":
                             thisclass.fields[field.key] = {
                                 element: input,
-                                type: 'number',
+                                type: 'numeric',
                                 table: field.table ? field.table : row.table,
                                 field: field
                             }
@@ -504,39 +504,35 @@ class FormJSON {
                             divMultiFile.appendChild(input);
                             divMultiFile.appendChild(filelist);
 
+                            input.addFile = function(url) {
+                                var fdiv = document.createElement("div");
+                                var close = document.createElement("span");
+                                close.setAttribute("class", "fjclosebutton")
+                                close.innerHTML = " &times; "
+                                close.onclick = function(e) {
+                                    e = e.target;
+                                    e.parentElement.parentElement.removeChild(e.parentElement);
+                                }
 
-                            input.addFile = function(url){
-                                    var fdiv = document.createElement("div");
-                                        var close = document.createElement("span");
-                                        close.setAttribute("class", "fjclosebutton")
-                                        close.innerHTML = " &times; "
-                                        close.onclick = function(e){
-                                                e=e.target;
-                                                e.parentElement.parentElement.removeChild(e.parentElement);
-                                        }
+                                var open = document.createElement("a");
+                                open.setAttribute("class", "fjclosebutton")
+                                open.setAttribute("href", url);
+                                open.setAttribute("target", "_blank");
+                                open.innerHTML = " &raquo; "
 
-                                        var open = document.createElement("a");
-                                        open.setAttribute("class", "fjclosebutton")
-                                        open.setAttribute("href", url);
-                                        open.setAttribute("target", "_blank");
-                                        open.innerHTML = " &raquo; "
-                                        
+                                var newfile = document.createElement("input");
+                                newfile.setAttribute("type", "text");
+                                newfile.setAttribute("width", "100px");
 
-                                        var newfile = document.createElement("input");
-                                        newfile.setAttribute("type", "text");
-                                        newfile.setAttribute("width", "100px");
+                                fdiv.appendChild(close);
+                                fdiv.appendChild(newfile);
+                                fdiv.appendChild(open);
 
-                                        fdiv.appendChild(close);
-                                        fdiv.appendChild(newfile);
-                                        fdiv.appendChild(open);
-
-                                        
-                                        newfile.value = url;
-                                        newfile.setAttribute("value", url);
-                                        this.fjlist.appendChild(fdiv);
+                                newfile.value = url;
+                                newfile.setAttribute("value", url);
+                                this.fjlist.appendChild(fdiv);
 
                             }
-
 
                             input.onchange = function() {
                                 var self = this;
@@ -579,7 +575,6 @@ class FormJSON {
 
                                         self.addFile(data.Location);
 
-                                        
                                     });
                                 }
 
@@ -774,12 +769,12 @@ class FormJSON {
             break;
         case "multifile":
             var res = [];
-            for(var i=0;i<element.fjlist.children.length;i++){
-                    var item = element.fjlist.children[i];
-                    res.push(item.querySelector('input').value);
+            for (var i = 0; i < element.fjlist.children.length; i++) {
+                var item = element.fjlist.children[i];
+                res.push(item.querySelector('input').value);
             }
             result = JSON.stringify(res);
-           
+
             break;
         case "quill":
             result = element.getText();
@@ -894,18 +889,22 @@ class FormJSON {
             break;
         case "multifile":
 
-        var val = "";
+            var val = "";
 
-                element.fjlist.innerHTML = '';
-                val = JSON.parse(data);
-                for (var i = 0; i<val.length; i++) {
-                       element.addFile(val[i]);
-                }
-       
+            element.fjlist.innerHTML = '';
+            val = JSON.parse(data);
+            for (var i = 0; i < val.length; i++) {
+                element.addFile(val[i]);
+            }
+
             result = val;
             break;
         case "quill":
             result = element.setText(data)
+            break;
+        case "numeric":
+            data = data.replace("$", "");
+            result = element.value = Number(data);
             break;
         default:
             result = element.value = data;
@@ -1095,7 +1094,7 @@ class FormJSON {
             }
 
             function populate(arr, objs) {
-                    var contains = [];
+                var contains = [];
                 for (i = 0; i < arr.length; i++) {
                     /*check if the item starts with the same letters as the text field value:*/
                     if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
@@ -1116,9 +1115,9 @@ class FormJSON {
                             closeAllLists();
                         });
                         a.appendChild(b);
-                    }else if(arr[i].toUpperCase().includes(val.toUpperCase())){
+                    } else if (arr[i].toUpperCase().includes(val.toUpperCase())) {
                         b = document.createElement("DIV");
-                        b.innerHTML = arr[i].toUpperCase().replace(val.toUpperCase(),"<strong>" + val.toUpperCase()+ "</strong>");
+                        b.innerHTML = arr[i].toUpperCase().replace(val.toUpperCase(), "<strong>" + val.toUpperCase() + "</strong>");
                         b.innerHTML += "<input type='hidden' value='" + arr[i] + "' index='" + i + "'>";
                         b.addEventListener("click", function(e) {
                             fieldd.value = objs[this.getElementsByTagName("input")[0].getAttribute("index")];
@@ -1129,9 +1128,8 @@ class FormJSON {
                     }
                 }
 
-
-                for(var j=0;j<contains.length;j++){
-                         a.appendChild(contains[j]);
+                for (var j = 0; j < contains.length; j++) {
+                    a.appendChild(contains[j]);
                 }
             }
 

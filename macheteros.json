@@ -1,0 +1,520 @@
+{
+	"label": "",
+	"type": "jsonform",
+	"formType": "transferenciaInv",
+	"class": "document",
+	"elements": [
+    {
+			"type": "section",
+			"hidden": false,
+			"frame": {
+				"label": "RELACION DE MACHETEROS",
+				"labelColor": "#ffffff",
+				"headerHeight": "16px",
+				"headerFillColor": "#43a047",
+				"lineColor": "#43a047",
+				"lineThick": "1px"
+			},
+			"rows": [
+        {
+					"type": "row",
+					"table": "movInv",
+					"height": "25px",
+					"fields": [
+            {
+							"key": "documento",
+							"label": "Documento",
+							"type": "list",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false,
+							"list": [{
+								"label": "Macheteros",
+								"value": "Macheteros"
+							}],
+							"defaultValue": "Macheteros"
+						},
+						{
+							"key": "fecha",
+							"label": "Fecha",
+							"type": "date",
+							"dataType": "date",
+							"width": "200px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false,
+							"dateoptions": {
+								"defaultDate": "today"
+							}
+						},
+						{
+							"key": "estatus",
+							"label": "Estatus",
+							"type": "text",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": false,
+							"hidden": false,
+							"disabled": true,
+							"defaultValue": "BORRADOR"
+						},
+						{
+							"key": "folio",
+							"label": "Folio",
+							"type": "text",
+							"dataType": "string",
+							"width": "200px",
+							"height": "25px",
+							"required": false,
+							"hidden": false,
+							"disabled": true
+						}
+					]
+				},
+				{
+					"type": "row",
+					"table": "movInv",
+					"height": "25px",
+					"fields": [
+            {
+							"key": "acreedor",
+							"label": "Cuadrilla",
+							"type": "autocomplete",
+							"dataType": "string",
+							"dataurl": "https://mutn3v9t25.execute-api.us-east-1.amazonaws.com/dev/controlpanel",
+							"datalength": 3,
+							"datadepth": "body.finalResult.data",
+							"datadisplay": "item.nombre",
+							"datareturn": "item.id",
+							"dataquery":
+							{
+									"bucket": "biforms-control-panel",
+									"file": "agricultores-autocomplete.json",
+									"masterFilter": "_QUERY"
+							},
+							"datamethod": "POST",
+							"strict": true,
+							"width": "412px",
+							"height": "25px",
+							"required": true,
+							"hidden": false,
+							"disabled": false
+						}
+					]
+				},
+				{
+					"type": "row",
+					"table": "movInv",
+					"height": "25px",
+					"fields": [
+            {
+						"key": "observaciones",
+						"label": "Observaciones",
+						"type": "text",
+						"dataType": "string",
+						"width": "840px",
+						"height": "25px",
+						"required": false,
+						"hidden": false,
+						"disabled": false
+					}]
+				}
+			]
+		},
+		{
+			"type": "section",
+			"hidden": false,
+			"frame": {
+				"label": "Producto",
+				"labelColor": "#ffffff",
+				"headerHeight": "6px",
+				"headerFillColor": "#43a047",
+				"lineColor": "#43a047",
+				"lineThick": "1px"
+			},
+			"rows": [
+				{
+					"type": "table",
+					"table": "movInvD",
+					"fields": [
+						{
+							"data": "proveedor",
+							"title": "Agricultor",
+							"type": "autocomplete",
+							"width": "150px",
+							"dataurl": "https://mutn3v9t25.execute-api.us-east-1.amazonaws.com/dev/controlpanel",
+							"datalength": 3,
+							"datadepth": "body.finalResult.data",
+							"datadisplay": "item.nombre",
+							"datareturn": "item.id",
+							"dataquery":
+							{
+									"bucket": "biforms-control-panel",
+									"file": "agricultores-autocomplete.json",
+									"masterFilter": "_QUERY"
+							},
+							"datamethod": "POST",
+							"strict": true
+						},
+						{
+							"data": "viaje",
+							"title": "Viaje",
+							"type": "text",
+							"width": "80px"
+						},
+						{
+							"data": "cantidad",
+							"title": "Cantidad",
+							"type": "numeric",
+							"numericFormat": {"pattern": "0,0.##"},
+							"width": "80px",
+							"required": true,
+							"sumary": "sum",
+							"sumform": ["totalCantidad"],
+							"fire": "cantidad2,importe"
+						},
+						{
+							"data": "unidad",
+							"title": "Empaque",
+							"type": "autocomplete",
+							"width": "80px",
+							"required": true,
+              "dataurl": "https://s3.amazonaws.com/formjson/articulos-unidad.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+            {
+							"data": "articulo",
+							"title": "Tamaño",
+							"type": "autocomplete",
+							"width": "80px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/articulos-tamano.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "actividad",
+							"title": "Actividad",
+							"type": "autocomplete",
+							"width": "100px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/actividades.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "horaInicio",
+							"title": "Hora Inicio",
+							"type": "time",
+							"timeFormat": "h:mm:ss a",
+							"correctFormat": true,
+							"width": "100px",
+							"required": true
+						},
+						{
+							"data": "almacenOrigen",
+							"title": "Origen",
+							"type": "autocomplete",
+							"width": "80px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/almacenes.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "almacenDestino",
+							"title": "Destino",
+							"type": "autocomplete",
+							"width": "80px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/almacenes.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "precio",
+							"title": "$ TON",
+							"type": "numeric",
+							"numericFormat": {"pattern": "$0,0.00","culture": "es-MX"},
+							"width": "80px",
+							"fire": "cantidad2,importe",
+							"required": true
+						},
+						{
+							"data": "peso",
+							"title": "Kg X Bulto",
+							"type": "numeric",
+							"numericFormat": {"pattern": "0,0.##"},
+							"width": "100px",
+							"fire": "cantidad2,importe",
+							"required": true
+						},
+						{
+							"data": "cantidad2",
+							"title": "Peso",
+							"type": "numeric",
+							"numericFormat": {"pattern": "0,0.##"},
+							"width": "100px",
+							"editor": false,
+							"sumary": "sum",
+							"sumform": ["totalCantidad2"],
+							"expression": "col('cantidad')*col('peso')"
+						},
+						{
+							"data": "importe",
+							"title": "Total",
+							"type": "numeric",
+							"numericFormat": {"pattern": "$0,0.00","culture": "es-MX"},
+							"width": "100px",
+							"sumary": "sum",
+							"sumform": ["subTotal"],
+							"editor": false,
+							"expression": "col('cantidad')*col('peso')*col('precio')/1000"
+						}
+					]
+				},
+				{
+					"type": "row",
+					"table": "movInv",
+					"fields": [{
+							"key": "blank1",
+							"width": "250px",
+							"type": "hidden",
+							"hidden": true
+						},
+						{
+							"key": "totalCantidad",
+							"label": "Arp-Cjs (1)",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						},
+						{
+							"key": "totalCantidad2",
+							"label": "Peso",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						},
+						{
+							"key": "subTotal",
+							"label": "SubTotal (1)",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "section",
+			"hidden": false,
+			"frame": {
+				"label": "Cajas Vacías y Otras Actividades",
+				"labelColor": "#ffffff",
+				"headerHeight": "6px",
+				"headerFillColor": "#43a047",
+				"lineColor": "#43a047",
+				"lineThick": "1px"
+			},
+			"rows": [
+				{
+					"type": "table",
+					"table": "movInvLabor",
+					"fields": [
+						{
+							"data": "cantidad",
+							"title": "Cantidad",
+							"type": "numeric",
+							"numericFormat": {"pattern": "0,0.##"},
+							"width": "80px",
+							"required": true,
+							"sumary": "sum",
+							"sumform": ["totalCantidad3"],
+							"fire": "importe"
+						},
+						{
+							"data": "unidad",
+							"title": "Arp-Cjs",
+							"type": "autocomplete",
+							"width": "80px",
+							"required": true,
+              "dataurl": "https://s3.amazonaws.com/formjson/articulos-unidad.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "actividad",
+							"title": "Actividad",
+							"type": "autocomplete",
+							"width": "100px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/actividades.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "horaInicio",
+							"title": "Hora Inicio",
+							"type": "time",
+							"timeFormat": "h:mm:ss a",
+							"correctFormat": true,
+							"width": "100px",
+							"required": true
+						},
+						{
+							"data": "almacenOrigen",
+							"title": "Origen",
+							"type": "autocomplete",
+							"width": "80px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/almacenes.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "almacenDestino",
+							"title": "Destino",
+							"type": "autocomplete",
+							"width": "80px",
+							"required": true,
+							"dataurl": "https://s3.amazonaws.com/formjson/almacenes.json",
+							"datalength": 1,
+							"datadisplay": "item.descripcion",
+							"datareturn": "item.id",
+							"datamethod": "GET",
+							"strict": true
+						},
+						{
+							"data": "precio",
+							"title": "Precio",
+							"type": "numeric",
+							"width": "80px",
+							"fire": "importe",
+							"required": true,
+							"numericFormat": {
+								"pattern": "$0,0.00",
+								"culture": "en-US"
+							}
+						},
+						{
+							"data": "importe",
+							"title": "Total",
+							"type": "numeric",
+							"width": "100px",
+							"sumary": "sum",
+							"sumform": ["subTotal2"],
+							"editor": false,
+							"expression": "col('cantidad')*col('precio')"
+						}
+					]
+				},
+				{
+					"type": "row",
+					"table": "movInv",
+					"fields": [{
+							"key": "blank1",
+							"width": "250px",
+							"type": "hidden",
+							"hidden": true
+						},
+						{
+							"key": "totalCantidad3",
+							"label": "Arp-Cjs (2)",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						},
+						{
+							"key": "subTotal2",
+							"label": "SubTotal (2)",
+							"type": "numeric",
+							"width": "100px",
+							"disabled": true
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "section",
+			"hidden": false,
+			"frame": {
+				"label": "Notas",
+				"labelColor": "#ffffff",
+				"headerHeight": "6px",
+				"headerFillColor": "#43a047",
+				"lineColor": "#43a047",
+				"lineThick": "1px"
+			},
+			"rows": [
+				{
+					"type": "textarea",
+					"table": "movInv",
+					"height": "500px",
+					"key": "notas",
+					"label": "Notas"
+				},
+				{
+					"type": "row",
+					"table": "movInv",
+					"fields": [{
+						"key": "files",
+						"label": "Anexos",
+						"type": "file",
+						"s3BucketName": "formjson",
+						"s3BucketRegion": "us-east-1",
+						"s3IdentityPoolId": "us-east-1:13b6adc6-fff1-4033-bcad-dfd5f0fea671"
+					}]
+				},
+				{
+					"type": "row",
+					"table": "movInv",
+					"fields": [
+						{
+							"key": "documentId",
+							"label": "documentId",
+							"type": "text",
+							"dataType": "string",
+							"width": "412px",
+							"height": "25px",
+							"required": false,
+							"hidden": false,
+							"disabled": true
+						}]
+				}
+			]
+		}
+	]
+}
