@@ -81,3 +81,11 @@
 
   background-color: gray;
 }
+
+
+
+@media print {
+    abbr {
+        display: none;
+    }
+}
