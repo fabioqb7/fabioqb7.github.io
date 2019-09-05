@@ -903,7 +903,10 @@ class FormJSON {
             result = element.setText(data)
             break;
         case "numeric":
+
+            if(typeof(data) == 'string')
             data = data.replace("$", "");
+            
             result = element.value = Number(data);
             break;
         default:
