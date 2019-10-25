@@ -391,8 +391,34 @@ class FormJSON {
                         case "date":
 
                             input.setAttribute("type", "date");
-                            input.setAttribute("class", "input")
-                            input.setAttribute("autocomplete", "false")
+                            input.setAttribute("class", "input");
+                            input.setAttribute("autocomplete", "false");
+                            input.field = field;
+
+                            input.onkeydown = function(e) {
+                                var inputVal = e.target.value;
+                                var tokens = inputVal.split('-');
+
+                                if (tokens.length < 3) {
+                                    var TABKEY = 9;
+                                    if (e.keyCode == TABKEY) {
+                                        this.value += "-";
+                                        if (e.preventDefault) {
+                                            e.preventDefault();
+                                        }
+                                        return false;
+                                    }
+                                }
+                            }
+
+                            input.onblur = function(e) {
+                                thisclass.setField(e.target.field.key, e.target.value);
+                            }
+
+                            input.onfocus = function(e) {
+                                e.target.style.backgroundColor = "";
+                            }
+
                             var picker = flatpickr(input, field.dateoptions ? field.dateoptions : {});
                             thisclass.fields[field.key] = {
                                 element: input,
@@ -763,6 +789,14 @@ class FormJSON {
             break;
         case "date":
             result = element.value;
+            let vali = new Date(element.value);
+            if (vali.toString() == 'Invalid Date') {
+
+                element.style.backgroundColor = "red";
+
+                result = null;
+            }
+
             break;
         case "file":
             result = element.value;
@@ -876,7 +910,18 @@ class FormJSON {
             result = element.value = data;
             break;
         case "date":
+            element.style.backgroundColor = "";
+            let vali = new Date(data);
+            if (vali.toString() == 'Invalid Date') {
+                element.style.backgroundColor = "red";
+                return '';
+            }
 
+            if(!data){
+                    return '';
+            }
+
+            data = data.split('T')[0];
             var format = 'Y-m-d';
             if (field.field.dateoptions)
                 if (field.field.dateoptions.dateFormat)
@@ -892,11 +937,12 @@ class FormJSON {
             var val = "";
 
             element.fjlist.innerHTML = '';
-            val = JSON.parse(data);
-            for (var i = 0; i < val.length; i++) {
-                element.addFile(val[i]);
+            if (data) {
+                val = JSON.parse(data);
+                for (var i = 0; i < val.length; i++) {
+                    element.addFile(val[i]);
+                }
             }
-
             result = val;
             break;
         case "quill":
@@ -904,9 +950,11 @@ class FormJSON {
             break;
         case "numeric":
 
-            if(typeof(data) == 'string')
-            data = data.replace("$", "");
-            
+            if (typeof (data) == 'string') {
+                data = data.replace("$", "");
+                data = data.replace(",", "");
+            }
+
             result = element.value = Number(data);
             break;
         default:
@@ -1080,6 +1128,8 @@ class FormJSON {
                     if (fieldA.datamethod == "POST") {
                         request.open(fieldA.datamethod, fieldA.dataurl, true);
                         request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        if(window.localStorage.getItem('token'))
+                        request.setRequestHeader("Authorization", window.localStorage.getItem('token'));
                         request.send(JSON.stringify(query));
                     } else {
                         var str = "?";
@@ -1177,6 +1227,8 @@ class FormJSON {
                 currentFocus = (x.length - 1);
             /*add class "autocomplete-active":*/
             x[currentFocus].classList.add("autocomplete-active");
+            x[currentFocus].scrollIntoView(false);
+
         }
         function removeActive(x) {
             /*a function to remove the "active" class from all autocomplete items:*/
